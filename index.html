@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandarin PlayGroup (San Francisco) — playground meetups for little Mandarin speakers</title>
+<meta name="description" content="Rotating playground meetups around San Francisco so our little ones can play together while they chat in Mandarin. All levels welcome — from inspired to learn, to learning, to fluent.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFF9F0;
+    --ink: #2B2B33;
+    --ink-soft: #6B6B75;
+    --persimmon: #E8553D;
+    --persimmon-deep: #C23E29;
+    --leaf: #4C9A6B;
+    --sky: #4E8FD9;
+    --sun: #F5B62F;
+    --card: #FFFFFF;
+    --line: #EDE4D6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 3px solid var(--sky);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* ---------- Nav ---------- */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
+  .logo {
+    display: flex; align-items: center; gap: 11px;
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.02rem;
+    text-decoration: none; color: var(--ink); line-height: 1.2;
+  }
+  .logo svg { flex-shrink: 0; }
+  .logo small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 0.78rem; }
+  .nav-links { display: flex; gap: 26px; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-soft);
+    font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 0.95rem;
+  }
+  .nav-links a:hover { color: var(--persimmon); }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding: 52px 0 68px; text-align: center; }
+  .hero-title {
+    font-family: 'Fredoka', sans-serif; font-weight: 700;
+    font-size: clamp(2.6rem, 7.5vw, 4.6rem);
+    line-height: 1.08; letter-spacing: -0.01em;
+  }
+  .hero-title .w { display: inline-block; animation: pop 0.55s cubic-bezier(.34,1.56,.64,1) both; }
+  .hero-title .w:nth-child(1) { color: var(--persimmon); animation-delay: 0.05s; }
+  .hero-title .w:nth-child(2) { color: var(--sun);       animation-delay: 0.15s; }
+  .hero-title .w:nth-child(3) { color: var(--leaf);      animation-delay: 0.25s; }
+  .hero-title .w:nth-child(4) { color: var(--sky);       animation-delay: 0.35s; }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(22px) scale(0.88); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .hero-sub {
+    font-family: 'Fredoka', sans-serif; font-weight: 600;
+    font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+    margin-top: 20px;
+  }
+  .hero-levels {
+    display: inline-block; margin-top: 16px;
+    background: #FDEFD3; border: 1.5px dashed var(--sun);
+    border-radius: 999px; padding: 8px 22px;
+    font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 0.98rem;
+  }
+  .hero-body { max-width: 580px; margin: 18px auto 0; color: var(--ink-soft); font-size: 1.02rem; }
+  .hero-ctas { margin-top: 32px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1rem;
+    padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    border: none; cursor: pointer; display: inline-block;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--persimmon); color: #fff; box-shadow: 0 4px 0 var(--persimmon-deep); }
+  .btn-primary:hover { box-shadow: 0 6px 0 var(--persimmon-deep); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+
+  /* ---------- Section headers ---------- */
+  section { padding: 60px 0; }
+  .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .sec-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+  .sec-en { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.6rem; }
+  .sec-note { color: var(--ink-soft); margin-bottom: 36px; max-width: 640px; }
+
+  /* ---------- Event cards ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 26px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+    padding: 26px; position: relative;
+    box-shadow: 0 2px 0 var(--line);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { transform: translateY(-5px) rotate(-0.5deg); box-shadow: 0 10px 24px rgba(43,43,51,0.10); }
+  .card-doodle { height: 56px; }
+  .card-date {
+    position: absolute; top: 22px; right: 22px; text-align: center;
+    background: var(--paper); border: 1.5px dashed var(--persimmon);
+    border-radius: 14px; padding: 8px 14px;
+    font-family: 'Fredoka', sans-serif; line-height: 1.15;
+  }
+  .card-date .mo { font-size: 0.75rem; font-weight: 600; color: var(--persimmon); text-transform: uppercase; letter-spacing: 0.08em; }
+  .card-date .day { font-size: 1.5rem; font-weight: 700; }
+  .card h3 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.25rem; margin-top: 16px; }
+  .card .where { color: var(--ink-soft); font-size: 0.95rem; margin-top: 4px; }
+  .card .when  { color: var(--ink); font-size: 0.95rem; font-weight: 700; margin-top: 10px; }
+  .card p.desc { font-size: 0.95rem; color: var(--ink-soft); margin-top: 10px; flex: 1; }
+  .card .rsvp {
+    margin-top: 20px; align-self: flex-start;
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95rem;
+    color: var(--persimmon); text-decoration: none;
+    border-bottom: 2px solid var(--persimmon); padding-bottom: 2px;
+  }
+  .card .rsvp:hover { color: var(--persimmon-deep); border-color: var(--persimmon-deep); }
+  .past-note { margin-top: 28px; font-size: 0.92rem; color: var(--ink-soft); }
+
+  /* ---------- Special events ---------- */
+  .special {
+    background: #EAF2FB; border: 1px solid #D5E3F5; border-radius: 28px;
+    padding: 44px 40px;
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
+  }
+  .special h2 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.6rem; }
+  .special p { color: var(--ink-soft); margin-top: 12px; }
+  .special ul { list-style: none; margin-top: 16px; display: grid; gap: 10px; }
+  .special li {
+    background: #fff; border-radius: 12px; padding: 12px 18px;
+    font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 0.98rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .special li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .special li:nth-child(1)::before { background: var(--persimmon); }
+  .special li:nth-child(2)::before { background: var(--sun); }
+  .special li:nth-child(3)::before { background: var(--leaf); }
+
+  /* ---------- Newsletter ---------- */
+  .news {
+    background: var(--ink); border-radius: 28px; color: var(--paper);
+    padding: 56px 40px; text-align: center;
+  }
+  .news h2 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.7rem; color: var(--paper); }
+  .news h2 span { color: var(--sun); }
+  .news p { color: #C9C9D2; max-width: 540px; margin: 12px auto 30px; }
+  .news-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .news-form input {
+    font-family: 'Nunito', sans-serif; font-size: 1rem;
+    padding: 13px 20px; border-radius: 999px; border: none;
+    min-width: 280px; background: #fff; color: var(--ink);
+  }
+  .news-ok {
+    display: none; font-family: 'Fredoka', sans-serif; font-weight: 600;
+    color: var(--sun); font-size: 1.1rem; margin-top: 6px;
+  }
+  .news-whatsapp { margin-top: 26px; font-size: 0.95rem; color: #C9C9D2; }
+  .news-whatsapp a { color: var(--sun); font-weight: 700; text-decoration: none; }
+  .news-whatsapp .approve { display: block; font-size: 0.85rem; margin-top: 4px; color: #9A9AA6; }
+
+  /* ---------- About / footer ---------- */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+  .about-grid p + p { margin-top: 14px; }
+  .facts { display: grid; gap: 16px; }
+  .fact {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 22px; display: flex; gap: 16px; align-items: center;
+  }
+  .fact-dot { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; }
+  .fact strong { font-family: 'Fredoka', sans-serif; font-weight: 600; display: block; }
+  .fact span.small { color: var(--ink-soft); font-size: 0.92rem; }
+  footer {
+    border-top: 1px solid var(--line); margin-top: 40px; padding: 28px 0 40px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    color: var(--ink-soft); font-size: 0.92rem;
+  }
+  footer a { color: var(--persimmon); text-decoration: none; font-weight: 700; }
+
+  @media (max-width: 780px) {
+    .nav-links { display: none; }
+    .about-grid, .special { grid-template-columns: 1fr; }
+    .news, .special { padding: 40px 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-title .w { animation: none; }
+    .card, .btn { transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav>
+    <a class="logo" href="#">
+      <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">
+        <circle cx="13" cy="13" r="8" fill="#F5B62F"/>
+        <path d="M6 36 Q21 14 36 36" fill="none" stroke="#E8553D" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="33" cy="12" r="5" fill="#4E8FD9"/>
+      </svg>
+      <span>Mandarin PlayGroup<small>San Francisco</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#events">Playdates</a>
+      <a href="#special">Special events</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="hero-title" aria-label="Let's play together!">
+      <span class="w">Let's</span> <span class="w">play</span> <span class="w">together</span><span class="w">!</span>
+    </h1>
+    <p class="hero-sub">Rotating playground meetups around San Francisco so our little ones can play together while they chat in Mandarin 😄</p>
+    <p class="hero-levels">All Mandarin levels welcome — from inspired to learn, to learning, to fluent</p>
+    <p class="hero-body">We're 60+ families meeting at playgrounds across the city. Come for an hour or stay the whole time — drop in whenever works for you.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#newsletter">Get playdate updates</a>
+      <a class="btn btn-ghost" href="#events">See upcoming playdates</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section id="events">
+    <div class="sec-head">
+      <span class="sec-dot" style="background: var(--persimmon);"></span>
+      <h2 class="sec-en">Upcoming playdates</h2>
+    </div>
+    <p class="sec-note">Every playdate lives on Partiful — tap RSVP for details, who's coming, and text reminders. Drop-in friendly, always.</p>
+
+    <div class="cards">
+      <article class="card">
+        <div class="card-date"><div class="mo">Aug</div><div class="day">1</div></div>
+        <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
+          <path d="M10 46 Q40 6 78 20 L78 46" fill="none" stroke="#4C9A6B" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="100" cy="16" r="10" fill="#F5B62F"/>
+        </svg>
+        <h3>Lafayette Playground meetup</h3>
+        <div class="where">Lafayette Park · Pacific Heights</div>
+        <div class="when">Saturday, August 1 · 10:00 AM – 1:00 PM</div>
+        <p class="desc">Come for an hour or stay the whole time — drop in whenever works for you! Look for the group near the main play structure.</p>
+        <a class="rsvp" href="https://partiful.com/" target="_blank" rel="noopener">RSVP on Partiful →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-date"><div class="mo">Aug</div><div class="day">15</div></div>
+        <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
+          <circle cx="24" cy="28" r="14" fill="#4E8FD9"/>
+          <circle cx="60" cy="36" r="9" fill="#E8553D"/>
+          <circle cx="92" cy="24" r="12" fill="#F5B62F"/>
+        </svg>
+        <h3>Next playdate — location TBA</h3>
+        <div class="where">A new neighborhood each time</div>
+        <div class="when">Saturday, August 15 · morning</div>
+        <p class="desc">We rotate playgrounds around the city so every family gets a nearby one sometimes. Announced first in WhatsApp and the newsletter.</p>
+        <a class="rsvp" href="#newsletter">Get notified →</a>
+      </article>
+
+      <article class="card">
+        <div class="card-date"><div class="mo">Soon</div><div class="day">✦</div></div>
+        <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
+          <path d="M14 44 L34 12 L54 44 Z" fill="#4C9A6B"/>
+          <path d="M62 44 L82 18 L102 44 Z" fill="#F5B62F"/>
+        </svg>
+        <h3>Suggest a playground</h3>
+        <div class="where">Your neighborhood next?</div>
+        <div class="when">We're always adding spots</div>
+        <p class="desc">Know a great toddler-friendly playground with shade, gates, and good transit access? Tell us in the WhatsApp group.</p>
+        <a class="rsvp" href="#newsletter">Join the community →</a>
+      </article>
+    </div>
+
+    <p class="past-note">New playdates are announced first in the WhatsApp group and the newsletter. See you at the playground!</p>
+  </section>
+
+  <section id="special">
+    <div class="special">
+      <div>
+        <h2>Special events are coming 🎉</h2>
+        <p>Beyond our regular playground meetups, we're planning members-only gatherings that bring Mandarin to life for little ones — the kind of events that are hard to find anywhere else in the city.</p>
+      </div>
+      <ul>
+        <li>Mandarin-speaking toddler entertainers &amp; performers</li>
+        <li>Story time and song circles in Mandarin</li>
+        <li>Holiday celebrations with the whole community</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="newsletter">
+    <div class="news">
+      <h2>Never miss a <span>playdate</span></h2>
+      <p>Join our growing community of families meeting up at playgrounds across San Francisco - where little ones can play, explore, and hear Mandarin in a fun, natural setting. Sign up to get updates on upcoming playdates and special gatherings!</p>
+      <div class="news-form" id="signupForm">
+        <label for="email" style="position:absolute;left:-9999px;">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        <button class="btn btn-primary" type="button" id="subscribeBtn">Subscribe</button>
+      </div>
+      <p class="news-err" id="signupErr" style="display:none; color:#F5B62F; font-size:0.9rem; margin-top:10px;">Please enter a valid email address</p>
+      <p class="news-ok" id="signupOk">You're on the list! See you at the playground 🎉</p>
+      <p style="margin-top:14px; font-size:0.88rem; color:#9A9AA6;">Trouble with the form? <a href="https://form.jotform.com/262006972093053" target="_blank" rel="noopener" style="color:#F5B62F; font-weight:700; text-decoration:none;">Sign up here instead</a></p>
+      <p class="news-whatsapp">
+        Ready to jump in? <a href="https://chat.whatsapp.com/CjWJXMbr11qCc2uCh79cD8?mode=gi_t" target="_blank" rel="noopener">Join the WhatsApp group</a>
+        <span class="approve">Anti-spam measure: please message the Admin to get approved</span>
+      </p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="sec-head">
+      <span class="sec-dot" style="background: var(--sky);"></span>
+      <h2 class="sec-en">About the group</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>Mandarin PlayGroup (San Francisco) started with a simple idea: our little ones learn Mandarin best when they're having fun with friends. So we meet at playgrounds around the city — a different neighborhood each time — and let the kids do what they do best: play.</p>
+        <p>You don't need to be fluent. Plenty of us are learning right alongside our toddlers, and every level of Mandarin makes the group better.</p>
+      </div>
+      <div class="facts">
+        <div class="fact">
+          <span class="fact-dot" style="background:#FDE3DC;">
+            <svg width="18" height="18" viewBox="0 0 18 18"><circle cx="6" cy="6" r="4" fill="#E8553D"/><circle cx="13" cy="11" r="4" fill="#E8553D" opacity="0.55"/></svg>
+          </span>
+          <div><strong>60+ families</strong><span class="small">and growing, all across San Francisco</span></div>
+        </div>
+        <div class="fact">
+          <span class="fact-dot" style="background:#DCEAFA;">
+            <svg width="18" height="18" viewBox="0 0 18 18"><path d="M3 14 Q9 2 15 14" fill="none" stroke="#4E8FD9" stroke-width="3" stroke-linecap="round"/></svg>
+          </span>
+          <div><strong>Rotating playgrounds</strong><span class="small">a new neighborhood most meetups, transit-friendly picks</span></div>
+        </div>
+        <div class="fact">
+          <span class="fact-dot" style="background:#DDEEE4;">
+            <svg width="18" height="18" viewBox="0 0 18 18"><rect x="3" y="4" width="12" height="9" rx="3" fill="#4C9A6B"/><path d="M7 13 L6 16 L10 13" fill="#4C9A6B"/></svg>
+          </span>
+          <div><strong>Active WhatsApp community</strong><span class="small">playdate announcements, questions, and new friends</span></div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div>Mandarin PlayGroup (San Francisco) · Let's play together!</div>
+      <div>Brands &amp; venues: <a href="mailto:hello@example.com">partner with us</a></div>
+    </footer>
+  </section>
+</div>
+
+<script>
+  // JotForm: "Stay in the loop for Mandarin Playgroup (SF)"
+  const JOTFORM_FORM_ID = '262006972093053';
+
+  document.getElementById('subscribeBtn').addEventListener('click', function () {
+    const email = document.getElementById('email').value.trim();
+    const errEl = document.getElementById('signupErr');
+
+    // Basic validation (the click handler bypasses native form validation)
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errEl.style.display = 'block';
+      return;
+    }
+    errEl.style.display = 'none';
+
+    // JotForm names its email field like "q3_email" where the number varies
+    // per form. We send the email under every likely name; JotForm keeps the
+    // one that matches and ignores the rest — so no manual lookup needed.
+    const data = new FormData();
+    for (let i = 1; i <= 12; i++) {
+      data.append('q' + i + '_email', email);
+    }
+
+    fetch('https://submit.jotform.com/submit/' + JOTFORM_FORM_ID, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    }).finally(() => {
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('signupOk').style.display = 'block';
+    });
+  });
+
+  // Let Enter in the email field trigger subscribe too
+  document.getElementById('email').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('subscribeBtn').click();
+  });
+</script>
+
+</body>
+</html>
