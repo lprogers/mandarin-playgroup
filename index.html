@@ -165,6 +165,11 @@
     padding: 13px 20px; border-radius: 999px; border: none;
     min-width: 280px; background: #fff; color: var(--ink);
   }
+  .news-form select {
+    font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 1rem;
+    padding: 13px 20px; border-radius: 999px; border: none;
+    background: #fff; color: var(--ink); cursor: pointer;
+  }
   .news-ok {
     display: none; font-family: 'Fredoka', sans-serif; font-weight: 600;
     color: var(--sun); font-size: 1.1rem; margin-top: 6px;
@@ -341,6 +346,11 @@
       <div class="news-form" id="signupForm">
         <label for="email" style="position:absolute;left:-9999px;">Email address</label>
         <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        <select id="who">
+        <option value="parent" selected>I'm a parent</option>
+        <option value="partner">I'm a brand or venue</option>
+        <option value="other">Other</option>
+      </select>
         <button class="btn btn-primary" type="button" id="subscribeBtn">Subscribe</button>
       </div>
       <p class="news-err" id="signupErr" style="display:none; color:#F5B62F; font-size:0.9rem; margin-top:10px;">Please enter a valid email address</p>
@@ -414,6 +424,10 @@
       return;
     }
     errEl.style.display = 'none';
+    const who = document.getElementById('who').value;
+    document.getElementById('signupOk').textContent = (who === 'parent')
+      ? "You're on the list! See you at the playground 🎉"
+      : "We've received your message! We'll be in touch shortly.";
 
     // JotForm names its email field like "q3_email" where the number varies
     // per form. We send the email under every likely name; JotForm keeps the
