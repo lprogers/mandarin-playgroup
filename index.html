@@ -173,6 +173,16 @@
   .news-whatsapp a { color: var(--sun); font-weight: 700; text-decoration: none; }
   .news-whatsapp .approve { display: block; font-size: 0.85rem; margin-top: 4px; color: #9A9AA6; }
 
+  /* ---------- Contact ---------- */
+  .contact-card {
+    background: #E9F3EC; border: 1px solid #D3E6DA; border-radius: 28px;
+    padding: 44px 40px; text-align: center;
+  }
+  .contact-card h2 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.6rem; }
+  .contact-card p { color: var(--ink-soft); max-width: 560px; margin: 12px auto 26px; }
+  .contact-email { font-size: 0.95rem; }
+  .contact-email a { color: var(--persimmon); font-weight: 700; text-decoration: none; }
+
   /* ---------- About / footer ---------- */
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
   .about-grid p + p { margin-top: 14px; }
@@ -194,7 +204,7 @@
   @media (max-width: 780px) {
     .nav-links { display: none; }
     .about-grid, .special { grid-template-columns: 1fr; }
-    .news, .special { padding: 40px 24px; }
+    .news, .special, .contact-card { padding: 40px 24px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-title .w { animation: none; }
@@ -209,9 +219,26 @@
   <nav>
     <a class="logo" href="#">
       <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true">
-        <circle cx="13" cy="13" r="8" fill="#F5B62F"/>
-        <path d="M6 36 Q21 14 36 36" fill="none" stroke="#E8553D" stroke-width="5" stroke-linecap="round"/>
-        <circle cx="33" cy="12" r="5" fill="#4E8FD9"/>
+        <circle cx="8.5" cy="15" r="4" fill="#E8553D"/>
+        <circle cx="8.5" cy="24" r="4" fill="#E8553D"/>
+        <circle cx="33.5" cy="15" r="4" fill="#E8553D"/>
+        <circle cx="33.5" cy="24" r="4" fill="#E8553D"/>
+        <circle cx="14" cy="31" r="3.4" fill="#E8553D"/>
+        <circle cx="21" cy="32.2" r="3.4" fill="#E8553D"/>
+        <circle cx="28" cy="31" r="3.4" fill="#E8553D"/>
+        <rect x="18.7" y="2.5" width="4.6" height="8" rx="2.3" fill="#E8553D"/>
+        <rect x="7" y="9" width="28" height="22" rx="8" fill="#E8553D"/>
+        <circle cx="21" cy="12.2" r="2.0" fill="#F5B62F"/>
+        <path d="M9.5 13.6 Q13.5 11 17.2 13.2" fill="none" stroke="#F5B62F" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M24.8 13.2 Q28.5 11 32.5 13.6" fill="none" stroke="#F5B62F" stroke-width="2.4" stroke-linecap="round"/>
+        <ellipse cx="13.8" cy="18.2" rx="4.4" ry="3.3" fill="#FFF9F0" transform="rotate(-14 13.8 18.2)"/>
+        <ellipse cx="28.2" cy="18.2" rx="4.4" ry="3.3" fill="#FFF9F0" transform="rotate(14 28.2 18.2)"/>
+        <circle cx="14.6" cy="17.8" r="1.7" fill="#2B2B33"/>
+        <circle cx="27.4" cy="17.8" r="1.7" fill="#2B2B33"/>
+        <rect x="11.5" y="23.6" width="19" height="6.4" rx="3.2" fill="#FFF9F0"/>
+        <rect x="15.2" y="23.6" width="2.2" height="2.4" rx="1.1" fill="#E8553D"/>
+        <rect x="24.6" y="23.6" width="2.2" height="2.4" rx="1.1" fill="#E8553D"/>
+        <path d="M18.4 27 h5.2 v1 a2.6 2.6 0 0 1 -5.2 0 Z" fill="#F5B62F"/>
       </svg>
       <span>Mandarin PlayGroup<small>San Francisco</small></span>
     </a>
@@ -219,6 +246,7 @@
       <a href="#events">Playdates</a>
       <a href="#special">Special events</a>
       <a href="#newsletter">Newsletter</a>
+      <a href="#contact">Contact</a>
       <a href="#about">About</a>
     </div>
   </nav>
@@ -258,7 +286,7 @@
         <div class="where">Lafayette Park · Pacific Heights</div>
         <div class="when">Saturday, August 1 · 10:00 AM – 1:00 PM</div>
         <p class="desc">Come for an hour or stay the whole time — drop in whenever works for you! Look for the group near the main play structure.</p>
-        <a class="rsvp" href="https://partiful.com/" target="_blank" rel="noopener">RSVP on Partiful →</a>
+        <a class="rsvp" href="https://partiful.com/e/7bOkYsmjJsinJ03r5d2h" target="_blank" rel="noopener">RSVP on Partiful →</a>
       </article>
 
       <article class="card">
@@ -268,11 +296,11 @@
           <circle cx="60" cy="36" r="9" fill="#E8553D"/>
           <circle cx="92" cy="24" r="12" fill="#F5B62F"/>
         </svg>
-        <h3>Next playdate — location TBA</h3>
-        <div class="where">A new neighborhood each time</div>
-        <div class="when">Saturday, August 15 · morning</div>
-        <p class="desc">We rotate playgrounds around the city so every family gets a nearby one sometimes. Announced first in WhatsApp and the newsletter.</p>
-        <a class="rsvp" href="#newsletter">Get notified →</a>
+        <h3>Panhandle Playground meetup</h3>
+        <div class="where">Panhandle Playground</div>
+        <div class="when">Saturday, August 15 · 10:00 AM – 1:00 PM</div>
+        <p class="desc">Come for an hour or stay the whole time — drop in whenever works for you! Look for the group near the play structure.</p>
+        <a class="rsvp" href="https://partiful.com/e/L2PycOAkfpSzpjcSXbDB" target="_blank" rel="noopener">RSVP on Partiful →</a>
       </article>
 
       <article class="card">
@@ -325,6 +353,15 @@
     </div>
   </section>
 
+  <section id="contact">
+    <div class="contact-card">
+      <h2>Get in touch 👋</h2>
+      <p>Questions about the group, an idea for a playground, or a partnership inquiry — parents, brands, venues, and press are all welcome.</p>
+      <a class="btn btn-primary" href="https://form.jotform.com/262016274308149" target="_blank" rel="noopener">Open the contact form</a>
+      <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a></p>
+    </div>
+  </section>
+
   <section id="about">
     <div class="sec-head">
       <span class="sec-dot" style="background: var(--sky);"></span>
@@ -358,7 +395,7 @@
     </div>
     <footer>
       <div>Mandarin PlayGroup (San Francisco) · Let's play together!</div>
-      <div>Brands &amp; venues: <a href="mailto:hello@example.com">partner with us</a></div>
+      <div>Brands &amp; venues: <a href="#contact">partner with us</a></div>
     </footer>
   </section>
 </div>
