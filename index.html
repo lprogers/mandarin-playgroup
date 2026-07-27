@@ -328,9 +328,7 @@
   window.jotformEmbedHandler("iframe[id='JotFormIFrame-262057950093055']", "https://form.jotform.com/262057950093055");
 </script>
       </div>
-      <p class="news-err" id="signupErr" style="display:none; color:#F5B62F; font-size:0.9rem; margin-top:10px;">Please enter a valid email address</p>
-      <p class="news-ok" id="signupOk">You're on the list! See you at the playground 🎉</p>
-      <p style="margin-top:14px; font-size:0.88rem; color:#9A9AA6;">Trouble with the form? <a href="https://form.jotform.com/262006972093053" target="_blank" rel="noopener" style="color:#F5B62F; font-weight:700; text-decoration:none;">Sign up here instead</a></p>
+     
       <p class="news-whatsapp">
         Ready to jump in? <a href="https://chat.whatsapp.com/CjWJXMbr11qCc2uCh79cD8?mode=gi_t" target="_blank" rel="noopener">Join the WhatsApp community</a>
         <span class="approve">Anti-spam measure: please message the Admin to get approved</span>
@@ -391,45 +389,6 @@
     </footer>
   </section>
 </div>
-
-<script>
-  // JotForm: "Stay in the loop for Mandarin Playgroup (SF)"
-  const JOTFORM_FORM_ID = '262006972093053';
-
-  document.getElementById('subscribeBtn').addEventListener('click', function () {
-    const email = document.getElementById('email').value.trim();
-    const errEl = document.getElementById('signupErr');
-
-    // Basic validation (the click handler bypasses native form validation)
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errEl.style.display = 'block';
-      return;
-    }
-    errEl.style.display = 'none';
-
-    // JotForm names its email field like "q3_email" where the number varies
-    // per form. We send the email under every likely name; JotForm keeps the
-    // one that matches and ignores the rest — so no manual lookup needed.
-    const data = new FormData();
-    for (let i = 1; i <= 12; i++) {
-      data.append('q' + i + '_email', email);
-    }
-
-    fetch('https://submit.jotform.com/submit/' + JOTFORM_FORM_ID, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: data
-    }).finally(() => {
-      document.getElementById('signupForm').style.display = 'none';
-      document.getElementById('signupOk').style.display = 'block';
-    });
-  });
-
-  // Let Enter in the email field trigger subscribe too
-  document.getElementById('email').addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') document.getElementById('subscribeBtn').click();
-  });
-</script>
 
 </body>
 </html>
