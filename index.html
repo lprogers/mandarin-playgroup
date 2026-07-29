@@ -464,22 +464,114 @@
     <div class="contact-card">
       <h2>Get in touch 👋</h2>
       <p>Questions about the group, an idea for a playground, or a partnership inquiry — parents, brands, venues, and press are all welcome.</p>
-<section id="contact">
-    <div class="contact-card">
-  
+
+      <style>
+        .mpgc-form-card { max-width: 620px; width: 100%; margin: 0 auto; text-align: left; background: #FFFFFF; border-radius: 16px; padding: 32px 32px 28px; box-shadow: 0 2px 20px rgba(43, 43, 51, 0.06); }
+        .mpgc-form { font-family: 'Nunito', sans-serif; color: #2B2B33; }
+        .mpgc-field { margin-bottom: 18px; }
+        .mpgc-label { display: block; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px; color: #2B2B33; margin-bottom: 6px; }
+        .mpgc-label .req { color: #E8553D; }
+        .mpgc-input, .mpgc-textarea { width: 100%; box-sizing: border-box; font-family: 'Nunito', sans-serif; font-size: 15px; color: #2B2B33; background: #FFFFFF; border: 1px solid #EDE4D6; border-radius: 8px; padding: 10px 12px; transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+        .mpgc-input { height: 44px; }
+        .mpgc-textarea { height: 120px; resize: vertical; min-height: 88px; }
+        .mpgc-input::placeholder, .mpgc-textarea::placeholder { color: #6B6B75; opacity: 0.75; }
+        .mpgc-input:focus, .mpgc-textarea:focus { outline: none; border-color: #4E8FD9; box-shadow: 0 0 0 3px rgba(78, 143, 217, 0.35); }
+        .mpgc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .mpgc-chips input { position: absolute; opacity: 0; pointer-events: none; }
+        .mpgc-chip { display: inline-block; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 14px; color: #2B2B33; background: #FFF9F0; border: 1px solid #EDE4D6; border-radius: 999px; padding: 8px 16px; cursor: pointer; transition: all 0.15s ease; user-select: none; }
+        .mpgc-chip:hover { border-color: #E8553D; }
+        .mpgc-chips input:checked + .mpgc-chip { background: #E8553D; border-color: #E8553D; color: #FFFFFF; }
+        .mpgc-chips input:focus-visible + .mpgc-chip { box-shadow: 0 0 0 3px rgba(78, 143, 217, 0.45); }
+        .mpgc-submit-wrap { text-align: center; margin-top: 24px; }
+        .mpgc-submit { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px; color: #FFFFFF; background: #E8553D; border: none; border-radius: 999px; padding: 12px 40px; cursor: pointer; transition: background 0.15s ease; }
+        .mpgc-submit:hover { background: #C23E29; }
+        .mpgc-submit:focus-visible { outline: 3px solid #4E8FD9; outline-offset: 2px; }
+        .mpgc-submit:disabled { opacity: 0.6; cursor: default; }
+        .mpgc-error { color: #C23E29; font-size: 13px; margin-top: 5px; display: none; }
+        .mpgc-field.invalid .mpgc-error { display: block; }
+        .mpgc-field.invalid .mpgc-input, .mpgc-field.invalid .mpgc-textarea { border-color: #C23E29; }
+        .mpgc-success { display: none; text-align: center; padding: 28px 8px; font-family: 'Nunito', sans-serif; }
+        .mpgc-success h3 { font-family: 'Fredoka', sans-serif; color: #2B2B33; font-size: 22px; margin: 0 0 8px; }
+        .mpgc-success p { color: #6B6B75; margin: 0; line-height: 1.6; }
+      </style>
+
+      <div class="mpgc-form-card">
+        <form class="mpgc-form" action="https://submit.jotform.com/submit/262016274308149" method="POST" target="mpgc-contact-sink" novalidate>
+          <input type="hidden" name="formID" value="262016274308149">
+          <input type="hidden" name="simple_spc" value="262016274308149-262016274308149">
+          <input type="text" name="website" value="" tabindex="-1" aria-hidden="true" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
+
+          <div class="mpgc-field" data-field="name">
+            <label class="mpgc-label" for="mpgc-name">Name</label>
+            <input class="mpgc-input" id="mpgc-name" name="q19_name" type="text">
+          </div>
+
+          <div class="mpgc-field" data-field="email">
+            <label class="mpgc-label" for="mpgc-email">E-mail <span class="req">*</span></label>
+            <input class="mpgc-input" id="mpgc-email" name="q7_email" type="email">
+            <div class="mpgc-error">Please enter a valid email.</div>
+          </div>
+
+          <div class="mpgc-field">
+            <span class="mpgc-label">I'm reaching out as a</span>
+            <div class="mpgc-chips">
+              <label><input type="radio" name="q21_imReaching" value="Parent/Caregiver"><span class="mpgc-chip">Parent/Caregiver</span></label>
+              <label><input type="radio" name="q21_imReaching" value="Business"><span class="mpgc-chip">Business</span></label>
+              <label><input type="radio" name="q21_imReaching" value="Press"><span class="mpgc-chip">Press</span></label>
+              <label><input type="radio" name="q21_imReaching" value="Other"><span class="mpgc-chip">Other</span></label>
+            </div>
+          </div>
+
+          <div class="mpgc-field" data-field="message">
+            <label class="mpgc-label" for="mpgc-message">How can we help you? <span class="req">*</span></label>
+            <textarea class="mpgc-textarea" id="mpgc-message" name="q4_message4"></textarea>
+            <div class="mpgc-error">Please add a short message.</div>
+          </div>
+
+          <div class="mpgc-submit-wrap">
+            <button class="mpgc-submit" type="submit">Submit</button>
+          </div>
+        </form>
+
+        <div class="mpgc-success">
+          <h3>Thanks — we've got it! 👋</h3>
+          <p>We'll be in touch soon. In the meantime, feel free to email hello@mandarinplaygroup.com.</p>
+        </div>
+      </div>
+
+      <iframe name="mpgc-contact-sink" style="display:none" title="form target"></iframe>
+
+      <script>
+      (function () {
+        var form    = document.querySelector('#contact .mpgc-form');
+        var success = document.querySelector('#contact .mpgc-success');
+        var submitted = false;
+        function setInvalid(f, bad) {
+          var el = form.querySelector('.mpgc-field[data-field="' + f + '"]');
+          if (el) el.classList.toggle('invalid', bad);
+        }
+        form.addEventListener('submit', function (e) {
+          var email = form.querySelector('[name="q7_email"]').value.trim();
+          var msg   = form.querySelector('[name="q4_message4"]').value.trim();
+          var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+          var msgOk   = msg.length > 0;
+          setInvalid('email', !emailOk);
+          setInvalid('message', !msgOk);
+          if (!emailOk || !msgOk) { e.preventDefault(); return; }
+          submitted = true;
+          form.querySelector('.mpgc-submit').disabled = true;
+        });
+        document.querySelector('iframe[name="mpgc-contact-sink"]').addEventListener('load', function () {
+          if (!submitted) return;
+          form.style.display = 'none';
+          success.style.display = 'block';
+        });
+      })();
+      </script>
 
       <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a></p>
     </div>
   </section>
-
-      <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a></p>
-    </div>
-  </section>
-      <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a></p>
-    </div>
-  </section>
-
-  <section id="about">
     <div class="sec-head">
       <span class="sec-dot" style="background: var(--sky);"></span>
       <h2 class="sec-en">About the group</h2>
