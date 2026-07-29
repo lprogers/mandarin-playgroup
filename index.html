@@ -323,19 +323,143 @@
     <div class="news">
       <h2>Never miss a <span>playdate</span></h2>
       <p>Join our growing community of families meeting up at playgrounds across San Francisco - where little ones can play, explore, and hear Mandarin in a fun, natural setting. Sign up to get updates on upcoming playdates and special gatherings!</p>
-     <section id="newsletter">
-  <div class="news">
-    <h2>Never miss a <span>playdate</span></h2>
-    <p>Join our growing community of families meeting up at playgrounds across San Francisco - where little ones can play, explore, and hear Mandarin in a fun, natural setting. Sign up to get updates on upcoming playdates and special gatherings!</p>
-    <div class="news-form" id="signupForm">
+      <div class="news-form" id="signupForm">
 
-    </div>
-  </div>
-</section>
+        <style>
+          .mpg-form-card { max-width: 620px; width: 100%; margin: 0 auto; text-align: left; background: #FFFFFF; border-radius: 16px; padding: 32px 32px 28px; box-shadow: 0 2px 20px rgba(43, 43, 51, 0.06); }
+          .mpg-form { font-family: 'Nunito', sans-serif; color: #2B2B33; }
+          .mpg-field { margin-bottom: 18px; }
+          .mpg-label { display: block; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 14px; color: #2B2B33; margin-bottom: 6px; }
+          .mpg-label .req { color: #E8553D; }
+          .mpg-help { font-family: 'Nunito', sans-serif; font-size: 12px; color: #6B6B75; line-height: 1.5; margin-top: 5px; }
+          .mpg-input, .mpg-textarea { width: 100%; box-sizing: border-box; font-family: 'Nunito', sans-serif; font-size: 15px; color: #2B2B33; background: #FFFFFF; border: 1px solid #EDE4D6; border-radius: 8px; padding: 10px 12px; transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+          .mpg-input { height: 44px; }
+          .mpg-textarea { height: 92px; resize: vertical; min-height: 72px; }
+          .mpg-input::placeholder, .mpg-textarea::placeholder { color: #6B6B75; opacity: 0.75; }
+          .mpg-input:focus, .mpg-textarea:focus { outline: none; border-color: #4E8FD9; box-shadow: 0 0 0 3px rgba(78, 143, 217, 0.35); }
+          .mpg-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+          .mpg-chips input { position: absolute; opacity: 0; pointer-events: none; }
+          .mpg-chip { display: inline-block; font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 14px; color: #2B2B33; background: #FFF9F0; border: 1px solid #EDE4D6; border-radius: 999px; padding: 8px 16px; cursor: pointer; transition: all 0.15s ease; user-select: none; }
+          .mpg-chip:hover { border-color: #E8553D; }
+          .mpg-chips input:checked + .mpg-chip { background: #E8553D; border-color: #E8553D; color: #FFFFFF; }
+          .mpg-chips input:focus-visible + .mpg-chip { box-shadow: 0 0 0 3px rgba(78, 143, 217, 0.45); }
+          .mpg-submit-wrap { text-align: center; margin-top: 24px; }
+          .mpg-submit { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 16px; color: #FFFFFF; background: #E8553D; border: none; border-radius: 999px; padding: 12px 40px; cursor: pointer; transition: background 0.15s ease; }
+          .mpg-submit:hover { background: #C23E29; }
+          .mpg-submit:focus-visible { outline: 3px solid #4E8FD9; outline-offset: 2px; }
+          .mpg-submit:disabled { opacity: 0.6; cursor: default; }
+          .mpg-error { color: #C23E29; font-size: 13px; margin-top: 5px; display: none; }
+          .mpg-field.invalid .mpg-error { display: block; }
+          .mpg-field.invalid .mpg-input, .mpg-field.invalid .mpg-textarea { border-color: #C23E29; }
+          .mpg-success { display: none; text-align: center; padding: 28px 8px; font-family: 'Nunito', sans-serif; }
+          .mpg-success h3 { font-family: 'Fredoka', sans-serif; color: #2B2B33; font-size: 22px; margin: 0 0 8px; }
+          .mpg-success p { color: #6B6B75; margin: 0; line-height: 1.6; }
+        </style>
+
+        <div class="mpg-form-card">
+          <form class="mpg-form" action="https://submit.jotform.com/submit/262057950093055" method="POST" target="mpg-signup-sink" novalidate>
+            <input type="hidden" name="formID" value="262057950093055">
+            <input type="hidden" name="simple_spc" value="262057950093055-262057950093055">
+            <input type="text" name="website" value="" tabindex="-1" aria-hidden="true" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
+
+            <div class="mpg-field" data-field="name">
+              <label class="mpg-label" for="mpg-name">Your Name <span class="req">*</span></label>
+              <input class="mpg-input" id="mpg-name" name="q2_q2_textbox0" type="text">
+              <div class="mpg-error">Please enter your name.</div>
+            </div>
+
+            <div class="mpg-field">
+              <label class="mpg-label" for="mpg-ages">Child(ren)'s age(s)</label>
+              <input class="mpg-input" id="mpg-ages" name="q3_q3_textbox1" type="text">
+              <div class="mpg-help">List all children joining, e.g. 4 and 2</div>
+            </div>
+
+            <div class="mpg-field">
+              <label class="mpg-label" for="mpg-hood">Neighborhood in SF or where do you live if not in SF?</label>
+              <input class="mpg-input" id="mpg-hood" name="q4_q4_textbox2" type="text">
+            </div>
+
+            <div class="mpg-field">
+              <label class="mpg-label" for="mpg-interest">What made you interested in joining?</label>
+              <textarea class="mpg-textarea" id="mpg-interest" name="q5_q5_textarea3"></textarea>
+            </div>
+
+            <div class="mpg-field">
+              <label class="mpg-label" for="mpg-phone">Phone number</label>
+              <input class="mpg-input" id="mpg-phone" name="q10_phoneNumber[full]" type="tel" placeholder="(000) 000-0000">
+              <div class="mpg-help">Enter your number if you'd like to join our WhatsApp group — we'll message you the invite there. Prefer email only? Leave this blank; you'll still get playgroup updates. We keep our community safe and spam-free.</div>
+            </div>
+
+            <div class="mpg-field" data-field="email">
+              <label class="mpg-label" for="mpg-email">Email address <span class="req">*</span></label>
+              <input class="mpg-input" id="mpg-email" name="q7_q7_email5" type="email">
+              <div class="mpg-help">Stay connected with our community and be the first to know about upcoming playgroups, events, and updates.</div>
+              <div class="mpg-error">Please enter a valid email.</div>
+            </div>
+
+            <div class="mpg-field">
+              <span class="mpg-label">How did you hear about us?</span>
+              <div class="mpg-chips">
+                <label><input type="checkbox" name="q8_q8_checkbox6[]" value="Website / Google search"><span class="mpg-chip">Website / Google search</span></label>
+                <label><input type="checkbox" name="q8_q8_checkbox6[]" value="Facebook group"><span class="mpg-chip">Facebook group</span></label>
+                <label><input type="checkbox" name="q8_q8_checkbox6[]" value="Partiful"><span class="mpg-chip">Partiful</span></label>
+                <label><input type="checkbox" name="q8_q8_checkbox6[]" value="Word of mouth"><span class="mpg-chip">Word of mouth</span></label>
+                <label><input type="checkbox" name="q8_q8_checkbox6[]" value="Flyer"><span class="mpg-chip">Flyer</span></label>
+                <label><input type="checkbox" id="mpg-other-toggle"><span class="mpg-chip">Other</span></label>
+              </div>
+              <input class="mpg-input" id="mpg-other-text" name="q8_q8_checkbox6[other]" type="text" placeholder="How'd you find us?" disabled style="display:none; margin-top:10px;">
+            </div>
+
+            <div class="mpg-submit-wrap">
+              <button class="mpg-submit" type="submit">Join the Playgroup</button>
+            </div>
+          </form>
+
+          <div class="mpg-success">
+            <h3>Welcome — you're in! 👋</h3>
+            <p>We'll be in touch soon with playgroup updates. If you shared your number, watch for a WhatsApp message with your group invite.</p>
+          </div>
+        </div>
+
+        <iframe name="mpg-signup-sink" style="display:none" title="form target"></iframe>
+
+        <script>
+        (function () {
+          var form    = document.querySelector('#signupForm .mpg-form');
+          var success = document.querySelector('#signupForm .mpg-success');
+          var submitted = false;
+          var otherToggle = document.getElementById('mpg-other-toggle');
+          var otherText   = document.getElementById('mpg-other-text');
+          otherToggle.addEventListener('change', function () {
+            if (otherToggle.checked) { otherText.style.display = 'block'; otherText.disabled = false; otherText.focus(); }
+            else { otherText.style.display = 'none'; otherText.disabled = true; otherText.value = ''; }
+          });
+          function setInvalid(f, bad) {
+            var el = form.querySelector('.mpg-field[data-field="' + f + '"]');
+            if (el) el.classList.toggle('invalid', bad);
+          }
+          form.addEventListener('submit', function (e) {
+            var name  = form.querySelector('[name="q2_q2_textbox0"]').value.trim();
+            var email = form.querySelector('[name="q7_q7_email5"]').value.trim();
+            var nameOk  = name.length > 0;
+            var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            setInvalid('name', !nameOk);
+            setInvalid('email', !emailOk);
+            if (!nameOk || !emailOk) { e.preventDefault(); return; }
+            submitted = true;
+            form.querySelector('.mpg-submit').disabled = true;
+          });
+          document.querySelector('iframe[name="mpg-signup-sink"]').addEventListener('load', function () {
+            if (!submitted) return;
+            form.style.display = 'none';
+            success.style.display = 'block';
+          });
+        })();
+        </script>
+
+      </div>
     </div>
   </section>
-
-  <section id="contact">
     <div class="contact-card">
       <h2>Get in touch 👋</h2>
       <p>Questions about the group, an idea for a playground, or a partnership inquiry — parents, brands, venues, and press are all welcome.</p>
