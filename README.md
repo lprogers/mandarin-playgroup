@@ -35,7 +35,7 @@ Future monetization will only come from partnerships that provide meaningful val
 
 **Manual event curation instead of a Partiful integration.** Partiful has no official public API. Reverse-engineered workarounds exist but depend on auth tokens that expire and undocumented endpoints that break. Since the group runs a small number of events per month, curating event cards by hand costs about 30 seconds per event and never breaks. RSVPs stay on Partiful, where the social proof (guest lists, text reminders) already works.
 
-**Email-only signup.** Every added form field cuts conversion, and the site's job is to make joining as light as possible which is important for this early-stage platform.
+**Deliberate friction on signup to mitigate spam and maintain quality.** A few extra fields plus manual review of every submission before I send the WhatsApp invite. Auto-issuing it is a webhook away; at 60 families the review costs me a minute, and I'll revisit when that stops being true.
 
 **JotForm as the form backend.** The site keeps its own custom-styled form and posts to JotForm's submit endpoint, so there is no iframe seam and no third-party styling to fight. JotForm provides the submission inbox, email notifications, autoresponder, and Google Sheets sync without any backend code.
 
