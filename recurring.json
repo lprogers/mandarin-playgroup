@@ -1,0 +1,182 @@
+{
+  "note": "Recurring events that have no machine-readable source. This is the only file you edit by hand, and only when a series starts, stops, or changes time. dow: 0=Sun. nth: which occurrences in the month, e.g. [1,3] for first and third. until: last date inclusive, omit for open-ended. url is fixed; urlPattern substitutes {YMD} with that day's YYYYMMDD.",
+  "rules": [
+    {
+      "id": "sfpark-toddler-tuesday",
+      "title": "Toddler Tuesday",
+      "venue": "Salesforce Park · Main Plaza",
+      "kind": "music",
+      "dow": 2,
+      "at": "10:00",
+      "mins": 60,
+      "url": "https://www.tjpa.org/salesforce-transit-center/activities"
+    },
+    {
+      "id": "sfpark-family-storytime",
+      "title": "Family Storytime",
+      "venue": "Salesforce Park · Main Plaza",
+      "kind": "library",
+      "dow": 3,
+      "nth": [1, 3],
+      "at": "10:00",
+      "mins": 30,
+      "url": "https://www.tjpa.org/salesforce-transit-center/activities"
+    },
+    {
+      "id": "sfpark-jamaroo",
+      "title": "JAMaROO Kids",
+      "venue": "Salesforce Park · Main Plaza",
+      "kind": "music",
+      "dow": 4,
+      "at": "10:00",
+      "mins": 45,
+      "until": "2026-10-30",
+      "url": "https://www.tjpa.org/salesforce-transit-center/activities"
+    },
+    {
+      "id": "thrivecity-littlebears-0-3",
+      "title": "Little Bears Music",
+      "venue": "Thrive City Plaza · ages 0–3",
+      "kind": "music",
+      "dow": 5,
+      "at": "10:00",
+      "mins": 60,
+      "urlPattern": "https://www.chasecenter.com/events/little-bears-music-class-{YMD}/"
+    },
+    {
+      "id": "thrivecity-littlebears-4-6",
+      "title": "Little Bears Music",
+      "venue": "Thrive City Plaza · ages 4–6",
+      "kind": "music",
+      "dow": 5,
+      "at": "12:00",
+      "mins": 60,
+      "urlPattern": "https://www.chasecenter.com/events/little-bears-music-class-{YMD}/"
+    },
+
+    {
+      "_comment": "North Beach Pool — warm pool, 86°F, good for small kids. Times transcribed from the Summer Interim schedule PDF (Aug 11–29). SF Rec & Park publishes these as per-pool PDFs with no feed, so they are hand-maintained. The until date is a hard stop: these slots stop appearing on Aug 29 rather than going stale. The generator warns when a rule is within 14 days of expiring.",
+      "id": "nbpool-tue-am",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 2,
+      "at": "10:15",
+      "mins": 90,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-tue-pm",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 2,
+      "at": "13:30",
+      "mins": 120,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-wed-pm",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 3,
+      "at": "13:00",
+      "mins": 150,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-wed-eve",
+      "title": "Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 3,
+      "at": "17:15",
+      "mins": 75,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-thu-am",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 4,
+      "at": "10:15",
+      "mins": 90,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "_comment": "Skipped Aug 27: every 4th Thursday all city pools close 12–2pm for Aquatics Division training, which overlaps this slot. The other Thursday slots fall outside the closure.",
+      "id": "nbpool-thu-pm",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 4,
+      "at": "13:30",
+      "mins": 120,
+      "until": "2026-08-29",
+      "skip": ["2026-08-27"],
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-thu-late",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 4,
+      "at": "16:00",
+      "mins": 75,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-fri-pm",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 5,
+      "at": "13:00",
+      "mins": 150,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-fri-eve",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 5,
+      "at": "17:30",
+      "mins": 90,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-sat-midday",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 6,
+      "at": "12:00",
+      "mins": 75,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    },
+    {
+      "id": "nbpool-sat-pm",
+      "title": "Rec / Family Swim",
+      "venue": "North Beach Pool · warm pool, 86°F",
+      "kind": "swim",
+      "dow": 6,
+      "at": "15:30",
+      "mins": 90,
+      "until": "2026-08-29",
+      "url": "https://sfrecpark.org/Facilities/Facility/Details/North-Beach-Pool-218"
+    }
+  ]
+}

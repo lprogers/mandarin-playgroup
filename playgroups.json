@@ -1,0 +1,29 @@
+{
+  "note": "Used only when the Partiful fetcher can't read the profile. If PARTIFUL_MODE=auto works, this file is ignored and can be left stale. Keep it as a safety net so a Partiful outage doesn't blank the playgroups off the calendar.",
+  "events": [
+    {
+      "id": "mpg-20260816-panhandle",
+      "title": "Mandarin Playgroup",
+      "venue": "The Panhandle · Golden Gate Park",
+      "start": "2026-08-16T10:00:00-07:00",
+      "end": "2026-08-16T13:00:00-07:00",
+      "url": "https://partiful.com/e/L2PycOAkfpSzpjcSXbDB"
+    },
+    {
+      "id": "mpg-20260905-westportal",
+      "title": "Mandarin Playgroup",
+      "venue": "West Portal Playground",
+      "start": "2026-09-05T10:00:00-07:00",
+      "end": "2026-09-05T13:00:00-07:00",
+      "url": "https://partiful.com/e/U0xXcex2L94hW8lg35Qk"
+    },
+    {
+      "id": "mpg-20260913-jackson",
+      "title": "Mandarin Playgroup",
+      "venue": "Jackson Playground · Potrero Hill",
+      "start": "2026-09-13T10:00:00-07:00",
+      "end": "2026-09-13T13:00:00-07:00",
+      "url": "https://partiful.com/e/kENszqNYcF7LOBe58nWb"
+    }
+  ]
+}

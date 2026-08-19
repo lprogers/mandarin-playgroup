@@ -1,0 +1,12 @@
+{
+  "name": "mandarinplaygroup-calendar",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/generate-events.mjs",
+    "dry": "node scripts/generate-events.mjs --dry-run"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
