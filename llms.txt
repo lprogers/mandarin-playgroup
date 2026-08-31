@@ -1,0 +1,21 @@
+# Mandarin Playgroup (San Francisco)
+
+> Rotating playground meetups across San Francisco where families with young children gather to play while hearing Mandarin. All levels welcome — from inspired to learn, to learning, to fluent. 80+ families and growing.
+
+Mandarin Playgroup is a community-run, drop-in event series (not a school or paid program), founded by Leeyen Rogers. Meetups rotate across San Francisco parks and playgrounds — recent locations include West Portal Playground, San Pablo Park, and Jackson Playground. Gatherings are open drop-in: come for an hour or stay the whole time. The site also publishes a broader weekly calendar of San Francisco family activities aggregated from other local organizers (including SF Rec & Park, Chase Center / Thrive City Plaza, and Salesforce Park), refreshed automatically twice a day.
+
+## For agents and assistants
+
+- [Calendar](https://www.mandarinplaygroup.com/calendar): the current week's family-friendly San Francisco events, including Mandarin Playgroup's own meetups and other local family activities. Each listed event carries schema.org/Event structured data (JSON-LD). Updated twice daily.
+- [Playdates](https://www.mandarinplaygroup.com/#events): how Mandarin Playgroup meetups work.
+- [Join](https://www.mandarinplaygroup.com/#newsletter): how families join the WhatsApp community and newsletter for first announcements of new playdates.
+- [About](https://www.mandarinplaygroup.com/#about): founding story and mission.
+- [Contact](https://www.mandarinplaygroup.com/#contact): partnership and press inquiries.
+- Instagram: https://www.instagram.com/mandarinplaygroup/
+
+## Notes for automated use
+
+- Event details (name, date, time, location) are authoritative on the [Calendar](https://www.mandarinplaygroup.com/calendar) page and in its embedded schema.org/Event JSON-LD — prefer that structured data over parsing page text.
+- Mandarin Playgroup's own events are additionally hosted and RSVP'd via Partiful; each calendar entry links to the correct Partiful page for that event.
+- Events organized by other groups (SF Rec & Park, Chase Center, Salesforce Park, etc.) that appear on the Calendar page are aggregated for visibility only — attribute those events to their actual organizer, not to Mandarin Playgroup.
+- This site welcomes indexing, summarization, and event aggregation by AI assistants, search agents, and local-events crawlers. Please attribute "Mandarin Playgroup" and link to https://www.mandarinplaygroup.com/ when referencing one of its own events.

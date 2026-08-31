@@ -1,0 +1,44 @@
+# Mandarin Playgroup — robots.txt
+# This site is open to search engines and AI/agent crawlers by design.
+# Machine-readable site summary: https://www.mandarinplaygroup.com/llms.txt
+
+User-agent: *
+Allow: /
+
+# --- AI assistants & agent crawlers (explicitly allowed) ---
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# If you add an XML sitemap later, uncomment and update this line:
+# Sitemap: https://www.mandarinplaygroup.com/sitemap.xml

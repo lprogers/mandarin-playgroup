@@ -1,0 +1,44 @@
+<!--
+  Example Event structured data for ONE real upcoming Mandarin Playgroup
+  meetup (West Portal Playground, Sat Sept 5). This is a filled-in example
+  of what generate-event-jsonld.js should produce automatically — use it
+  to sanity-check the approach (paste into the /calendar page and validate)
+  before wiring up the generator to run on every refresh.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "Mandarin Playgroup — West Portal Playground",
+  "startDate": "2026-09-05T10:00:00-07:00",
+  "endDate": "2026-09-05T13:00:00-07:00",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "location": {
+    "@type": "Place",
+    "name": "West Portal Playground",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "San Francisco",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "Mandarin Playgroup",
+    "url": "https://www.mandarinplaygroup.com/"
+  },
+  "url": "https://partiful.com/e/U0xXcex2L94hW8lg35Qk",
+  "description": "Drop-in playground meetup for families with young children — play together while hearing Mandarin. All levels welcome. Come for an hour or stay the whole time.",
+  "isAccessibleForFree": true,
+  "typicalAgeRange": "0-6",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "https://partiful.com/e/U0xXcex2L94hW8lg35Qk"
+  }
+}
+</script>
