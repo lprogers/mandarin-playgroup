@@ -1,5 +1,5 @@
 # Mandarin PlayGroup (San Francisco)
-Live at [mandarinplaygroup.com](https://mandarinplaygroup.com). Platform for a rapidly growing, 60+ family Mandarin playgroup community in San Francisco. 
+Live at [mandarinplaygroup.com](https://mandarinplaygroup.com). Platform for a rapidly growing, 100+ family Mandarin playgroup community in San Francisco. 
 
 Where families connect and kids hear Mandarin naturally. All levels welcome, from inspired to learn, to learning, to fluent.
 
