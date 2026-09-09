@@ -2,20 +2,12 @@
   "note": "Used only when the Partiful fetcher can't read the profile. If PARTIFUL_MODE=auto works, this file is ignored and can be left stale. Keep it as a safety net so a Partiful outage doesn't blank the playgroups off the calendar.",
   "events": [
     {
-      "id": "mpg-20260816-panhandle",
+      "id": "mpg-20260912-berkeley",
       "title": "Mandarin Playgroup",
-      "venue": "The Panhandle · Golden Gate Park",
-      "start": "2026-08-16T10:00:00-07:00",
-      "end": "2026-08-16T13:00:00-07:00",
-      "url": "https://partiful.com/e/L2PycOAkfpSzpjcSXbDB"
-    },
-    {
-      "id": "mpg-20260905-westportal",
-      "title": "Mandarin Playgroup",
-      "venue": "West Portal Playground",
-      "start": "2026-09-05T10:00:00-07:00",
-      "end": "2026-09-05T13:00:00-07:00",
-      "url": "https://partiful.com/e/U0xXcex2L94hW8lg35Qk"
+      "venue": "San Pablo Park · Berkeley",
+      "start": "2026-09-12T09:00:00-07:00",
+      "end": "2026-09-12T12:00:00-07:00",
+      "url": "https://partiful.com/e/ocBXHMsJWyz80soGs2r5"
     },
     {
       "id": "mpg-20260913-jackson",
@@ -24,6 +16,38 @@
       "start": "2026-09-13T10:00:00-07:00",
       "end": "2026-09-13T13:00:00-07:00",
       "url": "https://partiful.com/e/kENszqNYcF7LOBe58nWb"
+    },
+    {
+      "id": "mpg-20260930-yerbabuena",
+      "title": "Mandarin Playgroup",
+      "venue": "Yerba Buena Playground · SoMa",
+      "start": "2026-09-30T17:00:00-07:00",
+      "end": "2026-09-30T18:30:00-07:00",
+      "url": "https://partiful.com/e/krZzdlZtmqqGpvvMynC4"
+    },
+    {
+      "id": "mpg-20261006-genefriend",
+      "title": "Mandarin Playgroup",
+      "venue": "Gene Friend Recreation Center · SoMa",
+      "start": "2026-10-06T17:00:00-07:00",
+      "end": "2026-10-06T18:30:00-07:00",
+      "url": "https://partiful.com/e/sscjxlAEPOjrDJo3wo9q"
+    },
+    {
+      "id": "mpg-20261013-missionbay",
+      "title": "Mandarin Playgroup",
+      "venue": "Mission Bay Kids' Park · Mission Bay",
+      "start": "2026-10-13T17:00:00-07:00",
+      "end": "2026-10-13T18:30:00-07:00",
+      "url": "https://partiful.com/e/qPhQQC3gS3hX91hl7XU9"
+    },
+    {
+      "id": "mpg-20261017-sunset",
+      "title": "Mandarin Playgroup",
+      "venue": "Sunset Recreation Center · Sunset District",
+      "start": "2026-10-17T10:00:00-07:00",
+      "end": "2026-10-17T12:30:00-07:00",
+      "url": "https://partiful.com/e/NMZeZ5tHT5XtTNHhq05X"
     }
   ]
 }
