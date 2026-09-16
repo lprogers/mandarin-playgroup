@@ -23,10 +23,10 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expand } from './lib/recurrence.mjs';
-import { fetchPlaygroups } from './sources/partiful.mjs';
+import { fetchPlaygroups, fetchPastPlaygroups } from './sources/partiful.mjs';
 import { fetchSfplEvents } from './sources/sfpl.mjs';
 import { renderList, renderJsonLd, injectBetween } from './lib/prerender.mjs';
-import { renderPlaydateCards } from './lib/playdates.mjs';
+import { renderPlaydateCards, renderPastPlaydateCards } from './lib/playdates.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = resolve(ROOT, 'events.json');
@@ -266,10 +266,26 @@ async function main() {
   // Same idea for the homepage's "Upcoming playdates" cards: generate them
   // from live data instead of hand-editing, so a playgroup that's already
   // happened can never linger there the way the Sep 12 Berkeley one did.
+  //
+  // The "See past playdates" history is a separate, best-effort fetch — it's
+  // not part of the calendar or events.json, so a Partiful hiccup here
+  // shouldn't quarantine the whole run. A failure just leaves that section
+  // as it was on the previous run.
+  let pastPlaygroups = null;
+  try {
+    pastPlaygroups = await fetchPastPlaygroups({ log });
+    log(`past playgroups ${String(pastPlaygroups.length).padStart(4)} events`);
+  } catch (err) {
+    log(`past playgroups   fetch failed (${err.message}) — leaving homepage section as-is`);
+  }
+
   const HOME = resolve(ROOT, 'index.html');
   if (existsSync(HOME)) {
     let html = readFileSync(HOME, 'utf8');
     html = injectBetween(html, 'PLAYDATES', renderPlaydateCards(collected, today));
+    if (pastPlaygroups !== null) {
+      html = injectBetween(html, 'PASTPLAYDATES', renderPastPlaydateCards(pastPlaygroups, today));
+    }
     writeFileSync(HOME, html);
     log(`wrote ${HOME}`);
   } else {

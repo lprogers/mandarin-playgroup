@@ -49,22 +49,24 @@ const DOODLES = [
 const DAYTIME_DESC = 'Come for an hour or stay the whole time — drop in whenever works for you!';
 const EVENING_DESC = 'An after-work, after-daycare playdate — come for as long as works for you!';
 
-export function renderPlaydateCards(events, today, max = 8) {
-  const todayKey = today.toISOString().slice(0, 10);
-  const upcoming = events
-    .filter((e) => e.kind === 'playgroup' && e.start.slice(0, 10) >= todayKey)
-    .sort((a, b) => a.start.localeCompare(b.start))
-    .slice(0, max);
+// Past events can't invite anyone to "come by" — recap copy instead, still
+// split morning/evening so it doesn't read as a template.
+const DAYTIME_RECAP = 'Another good morning at the playground — thanks to everyone who came out!';
+const EVENING_RECAP = 'Another good after-work turnout — thanks to everyone who came out!';
 
-  return upcoming
-    .map((e, i) => {
-      const { mo, d, hh } = parts(e.start);
-      const shortVenue = e.venue.split(' · ')[0];
-      const when = `${weekday(e.start)}, ${LONG_MON[mo - 1]} ${d} · ${clock(e.start)}` +
-        (e.end ? ` – ${clock(e.end)}` : '');
-      const desc = hh >= 16 ? EVENING_DESC : DAYTIME_DESC;
+function cardHtml(e, i, { past = false } = {}) {
+  const { mo, d, hh } = parts(e.start);
+  const shortVenue = e.venue.split(' · ')[0];
+  const when = `${weekday(e.start)}, ${LONG_MON[mo - 1]} ${d} · ${clock(e.start)}` +
+    (e.end ? ` – ${clock(e.end)}` : '');
+  const evening = hh >= 16;
+  const desc = past
+    ? (evening ? EVENING_RECAP : DAYTIME_RECAP)
+    : (evening ? EVENING_DESC : DAYTIME_DESC);
+  const cardClass = past ? 'card card--past' : 'card';
+  const cta = past ? 'See on Partiful →' : 'RSVP on Partiful →';
 
-      return `<article class="card">
+  return `<article class="${cardClass}">
   <div class="card-date"><div class="mo">${MON[mo - 1]}</div><div class="day">${d}</div></div>
   <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
     ${DOODLES[i % DOODLES.length]}
@@ -73,8 +75,27 @@ export function renderPlaydateCards(events, today, max = 8) {
   <div class="where">${esc(e.venue)}</div>
   <div class="when">${when}</div>
   <p class="desc">${desc}</p>
-  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">RSVP on Partiful →</a>
+  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
 </article>`;
-    })
-    .join('\n\n');
+}
+
+export function renderPlaydateCards(events, today, max = 8) {
+  const todayKey = today.toISOString().slice(0, 10);
+  const upcoming = events
+    .filter((e) => e.kind === 'playgroup' && e.start.slice(0, 10) >= todayKey)
+    .sort((a, b) => a.start.localeCompare(b.start))
+    .slice(0, max);
+
+  return upcoming.map((e, i) => cardHtml(e, i, { past: false })).join('\n\n');
+}
+
+/** Most recent first — a "See past playdates" disclosure reads newest-on-top. */
+export function renderPastPlaydateCards(events, today, max = 12) {
+  const todayKey = today.toISOString().slice(0, 10);
+  const past = events
+    .filter((e) => e.kind === 'playgroup' && e.start.slice(0, 10) < todayKey)
+    .sort((a, b) => b.start.localeCompare(a.start))
+    .slice(0, max);
+
+  return past.map((e, i) => cardHtml(e, i, { past: true })).join('\n\n');
 }

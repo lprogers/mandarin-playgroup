@@ -106,7 +106,7 @@ function cleanVenue(rawTitle) {
   return m ? `${m[2]} · ${m[1]}` : stripped;
 }
 
-export async function fetchPlaygroups({ log }) {
+async function fetchProfileData() {
   const res = await fetch(PROFILE, {
     headers: { 'User-Agent': 'mandarinplaygroup-calendar/1.0 (+https://mandarinplaygroup.com)' },
   });
@@ -120,8 +120,11 @@ export async function fetchPlaygroups({ log }) {
       'set PARTIFUL_MODE=manual and use data/playgroups.json.'
     );
   }
+  return JSON.parse(match[1]);
+}
 
-  const data = JSON.parse(match[1]);
+export async function fetchPlaygroups({ log }) {
+  const data = await fetchProfileData();
   const raw = harvest(data);
   log(`  partiful: ${raw.length} candidate objects in __NEXT_DATA__`);
 
@@ -152,5 +155,47 @@ export async function fetchPlaygroups({ log }) {
   if (events.length === 0) {
     throw new Error('Parsed __NEXT_DATA__ but found no upcoming events — treating as a parser break, not an empty calendar.');
   }
+  return events;
+}
+
+/**
+ * For the homepage's "See past playdates" history, not the calendar — so
+ * unlike fetchPlaygroups() a zero result here is just "no history yet," not
+ * a failure worth quarantining the whole run over. Same profile page: the
+ * "Past Events" section Partiful renders is server-rendered into the same
+ * __NEXT_DATA__ blob as upcoming events, just with dates behind `now`.
+ */
+export async function fetchPastPlaygroups({ log, days = 365 } = {}) {
+  const data = await fetchProfileData();
+  const raw = harvest(data);
+
+  const now = Date.now();
+  const cutoff = now - days * 86400000;
+  const seen = new Set();
+  const events = [];
+
+  for (const r of raw) {
+    const startIso = toIso(r.rawStart);
+    if (!startIso) continue;
+    const t = new Date(startIso).getTime();
+    if (t >= now - 86400000) continue; // not past
+    if (t < cutoff) continue; // too old to be worth showing
+    if (seen.has(r.id)) continue;
+    seen.add(r.id);
+
+    events.push({
+      id: `mpg-partiful-${r.id}`,
+      kind: 'playgroup',
+      title: 'Mandarin Playgroup',
+      venue: cleanVenue(r.rawTitle),
+      start: startIso,
+      end: toIso(r.rawEnd),
+      url: `https://partiful.com/e/${r.id}`,
+      cultural: 'mandarin',
+      source: 'partiful',
+    });
+  }
+
+  if (log) log(`  partiful: ${events.length} past events (of ${raw.length} candidates)`);
   return events;
 }
