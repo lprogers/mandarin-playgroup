@@ -205,20 +205,10 @@
   .special {
     background: #EAF2FB; border: 1px solid #D5E3F5; border-radius: 28px;
     padding: 44px 40px;
-    display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
   }
+  .special-content { max-width: 640px; }
   .special h2 { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.6rem; }
   .special p { color: var(--ink-soft); margin-top: 12px; }
-  .special ul { list-style: none; margin-top: 16px; display: grid; gap: 10px; }
-  .special li {
-    background: #fff; border-radius: 12px; padding: 12px 18px;
-    font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 0.98rem;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .special li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .special li:nth-child(1)::before { background: var(--persimmon); }
-  .special li:nth-child(2)::before { background: var(--sun); }
-  .special li:nth-child(3)::before { background: var(--leaf); }
 
   /* ---------- Newsletter ---------- */
   .news {
@@ -296,7 +286,7 @@
     .nav-links.open { display: flex; }
     .nav-links a { padding: 12px 14px; border-radius: 10px; }
     .nav-links a:hover, .nav-links a:focus-visible { background: var(--paper); color: var(--persimmon); }
-    .about-grid, .special { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
     .news, .special, .contact-card { padding: 40px 24px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -694,17 +684,13 @@
   </section>
     <section id="special">
     <div class="special">
-      <div>
-        <h2>Special events are coming 🎉</h2>
-        <p>Beyond our regular playground meetups, we're planning members-only gatherings that bring Mandarin to life for little ones — and we welcome collaborations and partnerships with brands and venues that can serve our community, from group discounts to exclusive family experiences.</p>
-        <p style="margin-top:12px;">Do you perform for children in Mandarin — songs, stories, puppets, anything that makes little ones light up? We'd love to hear from you.</p>
-        <p style="margin-top:16px;"><a href="#contact" style="font-family:'Fredoka',sans-serif; font-weight:600; color:var(--persimmon); text-decoration:none; border-bottom:2px solid var(--persimmon); padding-bottom:2px;">Reach out about an event →</a></p>
+      <div class="special-content">
+        <h2>Special events are part of the playgroup 🎉</h2>
+        <p>Beyond our regular playground meetups, we bring Mandarin to life through special experiences — from storytimes and music classes to seasonal celebrations and more.</p>
+        <p style="margin-top:12px;">We hosted Music Together's first-ever music class in Mandarin for the Mandarin Playgroup community, and we're excited to keep offering more enriching opportunities.</p>
+        <p style="margin-top:12px;">Do you sing, tell stories, perform, teach, or create experiences for children in Mandarin? Or does your organization have something special to offer Bay Area families? We'd love to hear from you.</p>
+        <p style="margin-top:16px;"><a href="#contact" style="font-family:'Fredoka',sans-serif; font-weight:600; color:var(--persimmon); text-decoration:none; border-bottom:2px solid var(--persimmon); padding-bottom:2px;">Reach out about an event or partnership →</a></p>
       </div>
-      <ul>
-        <li>Mandarin-speaking toddler entertainers &amp; performers</li>
-        <li>Story time and song circles in Mandarin</li>
-        <li>Holiday celebrations with the whole community</li>
-      </ul>
     </div>
   </section>
    <section id="contact">
