@@ -177,9 +177,22 @@ export async function fetchChineseCultureEvents({ log, today = new Date() } = {}
       if (!res.ok) throw new Error(`${res.status}`);
       const text = pageText(await res.text());
 
-      const raw = await extractEvents({ apiKey, source, text, todayIso });
+      // Self-consistency, not a retry: temperature 0 turned out to still be
+      // genuinely non-deterministic here — two back-to-back calls on
+      // byte-identical page text returned 2 events and then 0 (verified by
+      // hand, this wasn't a stale-page artifact). Sample twice and take the
+      // union rather than trusting any single call; the per-event loop
+      // below already dedupes by title+date, so a run where both passes
+      // agree just contributes the same ids twice.
+      const [passA, passB] = await Promise.all([
+        extractEvents({ apiKey, source, text, todayIso }),
+        extractEvents({ apiKey, source, text, todayIso }),
+      ]);
+      const raw = [...passA, ...passB];
       anySourceSucceeded = true;
-      if (log) log(`  chinese-culture: ${source.name} — ${raw.length} candidate event(s)`);
+      if (log) {
+        log(`  chinese-culture: ${source.name} — ${passA.length} + ${passB.length} candidate event(s) across 2 passes`);
+      }
 
       for (const r of raw) {
         const startIso = toPacificIso(r.date, r.time);
