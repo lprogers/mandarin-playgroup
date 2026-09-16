@@ -123,7 +123,11 @@ Call record_events with what qualifies. If nothing qualifies, call it with an em
                   date: { type: 'string', description: 'ISO date, YYYY-MM-DD' },
                   time: { type: 'string', description: '24-hour start time, HH:MM' },
                   endTime: { type: 'string', description: '24-hour end time, HH:MM — omit if not stated' },
-                  venue: { type: 'string', description: 'Where it happens, e.g. "750 Kearny Street, San Francisco"' },
+                  venue: {
+                    type: 'string',
+                    description: 'Where it happens, e.g. "750 Kearny Street, San Francisco". ' +
+                      "If the page doesn't state a specific venue, use the organizing group's own name here — never a placeholder like \"unknown\" or \"TBD\".",
+                  },
                 },
                 required: ['title', 'date', 'time', 'venue'],
               },
@@ -182,11 +186,19 @@ export async function fetchChineseCultureEvents({ log, today = new Date() } = {}
         if (seen.has(id)) continue;
         seen.add(id);
 
+        // Backstop for the schema instruction above: a model that ignores it
+        // and emits a placeholder anyway shouldn't leak "<unknown>" onto the
+        // live calendar — fall back to the organizer's name instead.
+        const venueRaw = (r.venue || '').trim();
+        const venue = venueRaw && !/^(unknown|n\/a|tbd|<unknown>|none)$/i.test(venueRaw)
+          ? venueRaw
+          : source.name;
+
         events.push({
           id,
           kind: 'culture',
           title: r.title,
-          venue: r.venue || source.name,
+          venue,
           start: startIso,
           end: r.endTime ? toPacificIso(r.date, r.endTime) : null,
           url: source.url,
