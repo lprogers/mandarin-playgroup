@@ -17,6 +17,9 @@
  * Env:
  *   PARTIFUL_MODE=auto|manual   default auto; manual skips the fetcher
  *   HORIZON_DAYS=120            how far ahead to generate
+ *   ANTHROPIC_API_KEY           enables the Chinese cultural events source;
+ *                               that source is quarantined (not a hard
+ *                               failure) when it's unset
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -25,6 +28,7 @@ import { fileURLToPath } from 'node:url';
 import { expand } from './lib/recurrence.mjs';
 import { fetchPlaygroups, fetchPastPlaygroups } from './sources/partiful.mjs';
 import { fetchSfplEvents } from './sources/sfpl.mjs';
+import { fetchChineseCultureEvents } from './sources/chinese-culture.mjs';
 import { renderList, renderJsonLd, injectBetween } from './lib/prerender.mjs';
 import { renderPlaydateCards, renderPastPlaydateCards } from './lib/playdates.mjs';
 
@@ -60,7 +64,7 @@ function validate(events) {
     if (!e.start || isNaN(new Date(e.start))) problems.push(`bad start: ${where}`);
     if (e.end && isNaN(new Date(e.end))) problems.push(`bad end: ${where}`);
     if (e.url && !/^https?:\/\//i.test(e.url)) problems.push(`non-http url: ${where}`);
-    if (!['playgroup', 'library', 'swim', 'music'].includes(e.kind)) {
+    if (!['playgroup', 'library', 'swim', 'music', 'culture'].includes(e.kind)) {
       problems.push(`unknown kind "${e.kind}": ${where}`);
     }
   }
@@ -196,6 +200,23 @@ async function main() {
     );
     collected.push(...carried);
     log(`sfpl         ${String(carried.length).padStart(4)} events CARRIED OVER — fetch failed`);
+  }
+
+  // ── Chinese cultural events ──────────────────────────────────────────
+  // LLM-extracted from a curated list of orgs' own event pages — see
+  // sources/chinese-culture.mjs for why this doesn't use CSS selectors.
+  // Needs ANTHROPIC_API_KEY; quarantines (not a hard failure) without it.
+  try {
+    const culture = await fetchChineseCultureEvents({ log, today });
+    collected.push(...culture);
+    log(`culture      ${String(culture.length).padStart(4)} events`);
+  } catch (err) {
+    quarantined.push({ source: 'chinese-culture', reason: err.message });
+    const carried = (previous?.events || []).filter(
+      (e) => e.source === 'chinese-culture' && new Date(e.start) >= today
+    );
+    collected.push(...carried);
+    log(`culture      ${String(carried.length).padStart(4)} events CARRIED OVER — fetch failed`);
   }
 
   // ── Family swim ────────────────────────────────────────────────────────
