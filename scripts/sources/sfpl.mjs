@@ -77,9 +77,16 @@ export function parseListing(html, into = []) {
 
     const y = +m[1], mo = +m[2], d = +m[3];
 
-    // Walk up until we hit a container that contains a time range.
-    let row = a.parent();
-    for (let i = 0; i < 6 && !TIME_RANGE.test(row.text()); i++) row = row.parent();
+    // The per-event <article> is the container that actually holds the time,
+    // location, and topic tags together — a shallow parent walk stops at
+    // <header> (which has the time but not the location/topics) and silently
+    // drops both, so anchor on the article instead and only fall back to the
+    // walk if the markup ever loses that wrapper.
+    let row = a.closest('article');
+    if (!row.length) {
+      row = a.parent();
+      for (let i = 0; i < 10 && !TIME_RANGE.test(row.text()); i++) row = row.parent();
+    }
     const t = row.text().match(TIME_RANGE);
     if (!t) return; // no time — not an event row we can trust
 

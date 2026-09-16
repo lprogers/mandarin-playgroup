@@ -66,6 +66,48 @@ function validate(events) {
   return problems;
 }
 
+/**
+ * SFPL runs ~25 branches, most with their own weekly Families/Preschoolers
+ * storytime — pulled unfiltered that's 20-30+ near-duplicate listings on a
+ * busy day. Narrow it to Families/Preschoolers storytimes, capped per day,
+ * plus two things that always get through regardless of the cap: Main branch
+ * storytimes, and any Chinese/Mandarin-tagged programming (the reason this
+ * source exists at all).
+ */
+function filterSfplEvents(events, { maxPerDay = 8 } = {}) {
+  const isStorytime = (e) => /storytime/i.test(e.title);
+  const isFamiliesOrPreschoolers = (e) => /famil|preschool/i.test(e.title);
+  const isCanceled = (e) => /canceled/i.test(e.title);
+  const isMain = (e) => /^main /i.test(e.venue);
+
+  const always = events.filter(
+    (e) => e.cultural || (isStorytime(e) && isMain(e) && !isCanceled(e))
+  );
+  const alwaysIds = new Set(always.map((e) => e.id));
+
+  const candidates = events.filter(
+    (e) =>
+      !alwaysIds.has(e.id) &&
+      isStorytime(e) &&
+      isFamiliesOrPreschoolers(e) &&
+      !isCanceled(e)
+  );
+
+  const byDay = new Map();
+  for (const e of candidates) {
+    const day = e.start.slice(0, 10);
+    if (!byDay.has(day)) byDay.set(day, []);
+    byDay.get(day).push(e);
+  }
+  const capped = [];
+  for (const dayEvents of byDay.values()) {
+    dayEvents.sort((a, b) => a.start.localeCompare(b.start));
+    capped.push(...dayEvents.slice(0, maxPerDay));
+  }
+
+  return [...always, ...capped].sort((a, b) => a.start.localeCompare(b.start));
+}
+
 async function main() {
   const previous = loadPrevious();
   const today = new Date();
@@ -135,10 +177,17 @@ async function main() {
   }
 
   // ── SFPL storytimes ────────────────────────────────────────────────────
+  // SFPL runs ~25 branches, each with its own Families/Preschoolers storytime
+  // most weeks — pulled in full that's 20-30+ near-duplicate listings on a
+  // busy day. Keep it to a browsable subset: Families/Preschoolers storytimes
+  // capped per day, plus anything that must never be dropped regardless of
+  // the cap — Main branch storytimes (the flagship branch) and any
+  // Chinese/Mandarin-tagged programming (the whole reason this source exists).
   try {
-    const sfpl = await fetchSfplEvents({ log });
+    const sfplRaw = await fetchSfplEvents({ log });
+    const sfpl = filterSfplEvents(sfplRaw);
     collected.push(...sfpl);
-    log(`sfpl         ${String(sfpl.length).padStart(4)} events`);
+    log(`sfpl         ${String(sfpl.length).padStart(4)} events (of ${sfplRaw.length} fetched)`);
   } catch (err) {
     quarantined.push({ source: 'sfpl', reason: err.message });
     const carried = (previous?.events || []).filter(
