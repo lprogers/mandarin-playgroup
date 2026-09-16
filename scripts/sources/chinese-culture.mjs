@@ -107,6 +107,10 @@ Call record_events with what qualifies. If nothing qualifies, call it with an em
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 1024,
+      // Factual extraction, not creative writing — two back-to-back runs on
+      // the exact same page text produced 2 events and then 0 at the
+      // default temperature. Pin it down for consistent results.
+      temperature: 0,
       tool_choice: { type: 'tool', name: 'record_events' },
       tools: [{
         name: 'record_events',
