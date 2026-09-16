@@ -128,6 +128,6 @@ export function renderJsonLd(events, today, days = 60) {
 /** Replace the contents between <!-- NAME:START --> and <!-- NAME:END -->. */
 export function injectBetween(html, name, replacement) {
   const re = new RegExp(`(<!-- ${name}:START -->)[\\s\\S]*?(<!-- ${name}:END -->)`);
-  if (!re.test(html)) throw new Error(`Marker ${name}:START/END not found in calendar.html`);
+  if (!re.test(html)) throw new Error(`Marker ${name}:START/END not found`);
   return html.replace(re, `$1\n${replacement}\n$2`);
 }

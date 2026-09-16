@@ -26,6 +26,7 @@ import { expand } from './lib/recurrence.mjs';
 import { fetchPlaygroups } from './sources/partiful.mjs';
 import { fetchSfplEvents } from './sources/sfpl.mjs';
 import { renderList, renderJsonLd, injectBetween } from './lib/prerender.mjs';
+import { renderPlaydateCards } from './lib/playdates.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = resolve(ROOT, 'events.json');
@@ -260,6 +261,19 @@ async function main() {
     log(`wrote ${PAGE}`);
   } else {
     log('calendar.html not found — skipped pre-render.');
+  }
+
+  // Same idea for the homepage's "Upcoming playdates" cards: generate them
+  // from live data instead of hand-editing, so a playgroup that's already
+  // happened can never linger there the way the Sep 12 Berkeley one did.
+  const HOME = resolve(ROOT, 'index.html');
+  if (existsSync(HOME)) {
+    let html = readFileSync(HOME, 'utf8');
+    html = injectBetween(html, 'PLAYDATES', renderPlaydateCards(collected, today));
+    writeFileSync(HOME, html);
+    log(`wrote ${HOME}`);
+  } else {
+    log('index.html not found — skipped playdate card pre-render.');
   }
 
   if (quarantined.length) {

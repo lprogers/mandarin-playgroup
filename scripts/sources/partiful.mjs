@@ -40,21 +40,70 @@ function harvest(node, found = [], depth = 0) {
   return found;
 }
 
+/** US DST: second Sunday in March → first Sunday in November. */
+function pacificOffsetHours(y, m, d) {
+  const secondSunMarch = (() => {
+    const f = new Date(Date.UTC(y, 2, 1));
+    return 1 + ((7 - f.getUTCDay()) % 7) + 7;
+  })();
+  const firstSunNov = (() => {
+    const f = new Date(Date.UTC(y, 10, 1));
+    return 1 + ((7 - f.getUTCDay()) % 7);
+  })();
+  const after = m > 3 || (m === 3 && d >= secondSunMarch);
+  const before = m < 11 || (m === 11 && d < firstSunNov);
+  return after && before ? -7 : -8;
+}
+
+/**
+ * Every other source in this project writes ISO strings with an explicit
+ * Pacific offset (recurring.mjs, sfpl.mjs, data/playgroups.json) — the
+ * calendar's day-grouping and time-of-day rendering read those digits
+ * directly as local wall-clock time. `Date#toISOString()` returns UTC
+ * instead, which silently shifted every Partiful-sourced playgroup onto the
+ * wrong day or time once this fetcher started succeeding for real. Convert
+ * to the same Pacific-offset format everything else uses.
+ */
+function toPacificIso(date) {
+  if (!date || isNaN(date)) return null;
+  const offsetHours = pacificOffsetHours(date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+  const local = new Date(date.getTime() + offsetHours * 3600000);
+  const p = (n) => String(n).padStart(2, '0');
+  const offStr = offsetHours === -7 ? '-07:00' : '-08:00';
+  return `${local.getUTCFullYear()}-${p(local.getUTCMonth() + 1)}-${p(local.getUTCDate())}` +
+    `T${p(local.getUTCHours())}:${p(local.getUTCMinutes())}:${p(local.getUTCSeconds())}${offStr}`;
+}
+
 function toIso(value) {
   // Partiful may hand back epoch seconds, epoch millis, or an ISO string.
   if (typeof value === 'number') {
     const ms = value < 1e12 ? value * 1000 : value;
-    const d = new Date(ms);
-    return isNaN(d) ? null : d.toISOString();
+    return toPacificIso(new Date(ms));
   }
   if (typeof value === 'object' && value && '_seconds' in value) {
-    return new Date(value._seconds * 1000).toISOString();
+    return toPacificIso(new Date(value._seconds * 1000));
   }
   if (typeof value === 'string') {
-    const d = new Date(value);
-    return isNaN(d) ? null : d.toISOString();
+    return toPacificIso(new Date(value));
   }
   return null;
+}
+
+/**
+ * Partiful event titles are hand-typed per event and inconsistent — "Mandarin
+ * Playgroup - X (Y)", "Mandarin Playgroup (San Francisco)- Y", "Mandarin
+ * Playgroup - Y" all show up. Strip the group-name prefix that's redundant
+ * with the "title" field anyway, and where the remainder is "Neighborhood
+ * (Venue)" flip it to "Venue · Neighborhood" to match the site's usual venue
+ * format. Never invents a neighborhood that isn't already in the title.
+ */
+function cleanVenue(rawTitle) {
+  const stripped = rawTitle
+    .replace(/^mandarin playgroup\s*\(san francisco\)\s*-?\s*/i, '')
+    .replace(/^mandarin playgroup\s*-\s*/i, '')
+    .trim();
+  const m = stripped.match(/^(.+?)\s*\((.+)\)$/);
+  return m ? `${m[2]} · ${m[1]}` : stripped;
 }
 
 export async function fetchPlaygroups({ log }) {
@@ -91,7 +140,7 @@ export async function fetchPlaygroups({ log }) {
       id: `mpg-partiful-${r.id}`,
       kind: 'playgroup',
       title: 'Mandarin Playgroup',
-      venue: r.rawTitle,
+      venue: cleanVenue(r.rawTitle),
       start: startIso,
       end: toIso(r.rawEnd),
       url: `https://partiful.com/e/${r.id}`,
