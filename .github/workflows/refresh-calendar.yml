@@ -1,0 +1,49 @@
+name: Refresh calendar
+
+on:
+  schedule:
+    # ~6am and ~6pm Pacific (fixed UTC times, so this drifts an hour across
+    # DST — close enough for a "twice a day" refresh).
+    - cron: '0 13,1 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - name: Regenerate events
+        id: generate
+        run: |
+          set +e
+          node scripts/generate-events.mjs
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "mandarinplaygroup-bot"
+          git config user.email "hello@mandarinplaygroup.com"
+          git add events.json calendar.html
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Auto-refresh calendar $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push
+          fi
+
+      - name: Fail the run if a source was quarantined
+        if: steps.generate.outputs.exit_code != '0'
+        run: |
+          echo "generate-events.mjs reported a problem (exit ${{ steps.generate.outputs.exit_code }}) — see the 'Regenerate events' step above for which source failed." >&2
+          exit 1
