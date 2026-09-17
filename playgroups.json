@@ -2,7 +2,7 @@
   "note": "Used only when the Partiful fetcher can't read the profile. If PARTIFUL_MODE=auto works, this file is ignored and can be left stale. Keep it as a safety net so a Partiful outage doesn't blank the playgroups off the calendar.",
   "events": [
     {
-      "id": "mpg-20260912-berkeley",
+      "id": "mpg-20260912-sanpablo",
       "title": "Mandarin Playgroup",
       "venue": "San Pablo Park · Berkeley",
       "start": "2026-09-12T09:00:00-07:00",
