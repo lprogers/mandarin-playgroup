@@ -2320,6 +2320,51 @@ a.mpgcal-ev .mpgcal-venue::after{
   a.mpgcal-ev:hover{transform:none;}
 }
 
+/* ── "Ask the calendar" ─────────────────────────────────────────────── */
+.mpgcal-ask{
+  background:#fff;border:1.5px solid var(--mpgcal-border);border-radius:16px;
+  padding:22px 22px 20px;margin-bottom:20px;
+}
+.mpgcal-ask-title{
+  font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.15rem;
+  margin:0 0 4px;
+}
+.mpgcal-ask-sub{margin:0 0 14px;font-size:.88rem;color:var(--mpgcal-soft);}
+.mpgcal-ask-form{display:flex;gap:8px;flex-wrap:wrap;}
+.mpgcal-ask-input{
+  flex:1 1 260px;min-width:0;font-family:inherit;font-size:.95rem;
+  padding:11px 14px;border-radius:999px;border:1.5px solid var(--mpgcal-border);
+  background:var(--mpgcal-cream);color:var(--mpgcal-ink);
+}
+.mpgcal-ask-input:focus-visible{outline:2.5px solid var(--mpgcal-persimmon);outline-offset:1px;}
+.mpgcal-ask-btn{
+  font-family:'Fredoka',sans-serif;font-weight:500;font-size:.95rem;
+  padding:11px 24px;border-radius:999px;border:0;cursor:pointer;
+  background:var(--mpgcal-persimmon);color:#fff;transition:background .15s ease;
+}
+.mpgcal-ask-btn:hover{background:var(--mpgcal-persimmon-deep);}
+.mpgcal-ask-btn:disabled{opacity:.6;cursor:default;}
+.mpgcal-ask-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.mpgcal-ask-chip{
+  font-family:inherit;font-size:.82rem;padding:6px 14px;border-radius:999px;
+  border:1.5px solid var(--mpgcal-border);background:var(--mpgcal-cream);
+  color:var(--mpgcal-ink);cursor:pointer;transition:border-color .15s ease;
+}
+.mpgcal-ask-chip:hover{border-color:var(--mpgcal-persimmon);}
+.mpgcal-ask-status{margin:12px 0 0;font-size:.85rem;color:var(--mpgcal-soft);}
+.mpgcal-ask-answer{margin-top:14px;padding-top:14px;border-top:1px solid var(--mpgcal-border);}
+.mpgcal-ask-q{margin:0 0 6px;font-size:.82rem;color:var(--mpgcal-soft);}
+.mpgcal-ask-text{margin:0;font-size:.98rem;line-height:1.5;}
+.mpgcal-ask-text--note{color:var(--mpgcal-soft);font-style:italic;}
+.mpgcal-ask-results{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:8px;margin-top:12px;
+}
+@media (max-width:900px){
+  .mpgcal-ask{padding:18px 16px 16px;}
+  .mpgcal-ask-btn{flex:1 1 auto;}
+}
+
 /* ── Page shell ─────────────────────────────────────────────────────────
    Replace .pg-head and .pg-foot with your real header and footer markup
    from index.html so the two pages match. Everything else can stay.
@@ -2529,6 +2574,19 @@ body{
 
 <div class="mpgcal" id="calendar">
   <div class="mpgcal-inner">
+
+    <div class="mpgcal-ask">
+      <h3 class="mpgcal-ask-title">Ask the calendar</h3>
+      <p class="mpgcal-ask-sub">Skip the scrolling — ask in plain English.</p>
+      <form class="mpgcal-ask-form" data-mpgcal-ask-form>
+        <input class="mpgcal-ask-input" type="text" data-mpgcal-ask-input
+               placeholder="e.g. events for a 3 year old next week" autocomplete="off" maxlength="200">
+        <button class="mpgcal-ask-btn" type="submit">Ask</button>
+      </form>
+      <div class="mpgcal-ask-chips" data-mpgcal-ask-chips></div>
+      <p class="mpgcal-ask-status" data-mpgcal-ask-status hidden></p>
+      <div class="mpgcal-ask-answer" data-mpgcal-ask-answer hidden></div>
+    </div>
 
     <div class="mpgcal-bar">
       <div class="mpgcal-nav">
@@ -2883,6 +2941,94 @@ document.addEventListener("DOMContentLoaded", function(){
       if(list && list.length){ feed = list; render(); }
     })
     .catch(function(){ /* keep the placeholder week */ });
+
+  /* ── "Ask the calendar" — natural-language search, backed by a Worker
+     endpoint that calls Claude Haiku server-side (see worker.js). That
+     endpoint is budget-capped, so a request can come back saying the
+     feature is resting for the month — that's normal, not a bug. ────── */
+  var askForm    = document.querySelector("[data-mpgcal-ask-form]");
+  var askInput   = document.querySelector("[data-mpgcal-ask-input]");
+  var askChips   = document.querySelector("[data-mpgcal-ask-chips]");
+  var askStatus  = document.querySelector("[data-mpgcal-ask-status]");
+  var askAnswer  = document.querySelector("[data-mpgcal-ask-answer]");
+  var askBtn     = askForm ? askForm.querySelector(".mpgcal-ask-btn") : null;
+  var askCtl     = null;
+
+  function feedItemToCardShape(it){
+    var sp = ptParts(new Date(it.start));
+    var ep = it.end ? ptParts(new Date(it.end)) : null;
+    return {
+      hh:sp.hh, mm:sp.mm, endHh:ep?ep.hh:null, endMm:ep?ep.mm:null,
+      kind:it.kind||"library", name:it.title||"Untitled", venue:it.venue||"",
+      url:safeUrl(it.url), lantern:it.cultural==="mandarin"
+    };
+  }
+
+  function renderAskAnswer(query, data){
+    var byId = {};
+    if(feed){ for(var i=0;i<feed.length;i++){ byId[feed[i].id] = feed[i]; } }
+    var ids = (data && Array.isArray(data.eventIds)) ? data.eventIds : [];
+    var matched = [];
+    for(var j=0;j<ids.length;j++){ if(byId[ids[j]]) matched.push(byId[ids[j]]); }
+
+    var ok = !!(data && data.ok && data.answer);
+    var text = ok ? data.answer
+             : (data && data.note) ? data.note
+             : "Couldn't get an answer just now — try again in a moment.";
+
+    var html = '<p class="mpgcal-ask-q">You asked: &ldquo;'+esc(query)+'&rdquo;</p>'+
+      '<p class="mpgcal-ask-text'+(ok?"":" mpgcal-ask-text--note")+'">'+esc(text)+'</p>';
+    if(matched.length){
+      html += '<div class="mpgcal-ask-results">';
+      for(var k=0;k<matched.length;k++){ html += card(feedItemToCardShape(matched[k])); }
+      html += '</div>';
+    }
+    askAnswer.innerHTML = html;
+    askAnswer.hidden = false;
+  }
+
+  function runAsk(query){
+    query = (query||"").trim();
+    if(!query || !askBtn) return;
+    if(askCtl) askCtl.abort();
+    askCtl = new AbortController();
+    askBtn.disabled = true;
+    askStatus.hidden = false;
+    askStatus.textContent = "Thinking…";
+    askAnswer.hidden = true;
+
+    fetch("/api/ask", {
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body: JSON.stringify({query:query}),
+      signal: askCtl.signal
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        askStatus.hidden = true;
+        renderAskAnswer(query, data);
+      })
+      .catch(function(err){
+        if(err && err.name === "AbortError") return;
+        askStatus.hidden = true;
+        renderAskAnswer(query, { ok:false, note:"Couldn't reach the calendar assistant — try again in a moment." });
+      })
+      .then(function(){ askBtn.disabled = false; });
+  }
+
+  if(askForm){
+    ["Free things to do this weekend", "Mandarin playgroups this month",
+     "Music or storytime this week", "Toddler swim times this week"].forEach(function(q){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "mpgcal-ask-chip"; b.textContent = q;
+      b.addEventListener("click", function(){ askInput.value = q; runAsk(q); });
+      askChips.appendChild(b);
+    });
+    askForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      runAsk(askInput.value);
+    });
+  }
 })();
 </script>
 
