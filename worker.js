@@ -144,3 +144,102 @@ async function handleAsk(request, env, ctx, url) {
   const windowMs = MAX_EVENTS_WINDOW_DAYS * 86400000;
   const upcoming = list
     .filter((e) => {
+            const t = new Date(e.start).getTime();
+      return !isNaN(t) && t >= nowMs - 86400000 && t <= nowMs + windowMs;
+    })
+    .sort((a, b) => new Date(a.start) - new Date(b.start))
+    .slice(0, MAX_EVENTS_SENT)
+    .map((e) => ({
+      id: e.id,
+      kind: e.kind,
+      title: e.title,
+      venue: e.venue,
+      start: e.start,
+      end: e.end || null,
+      cultural: e.cultural || null,
+    }));
+
+  const ptFmt = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const todayLabel = ptFmt.format(now);
+
+  const prompt =
+    "You are the search assistant for a free family-activities calendar in San Francisco " +
+    "(swim times, library storytimes, outdoor music, and a Mandarin-language playgroup). " +
+    "Today is " +
+    todayLabel +
+    ". All times below are Pacific.\n\n" +
+    "Upcoming events, as JSON (id, kind, title, venue, start, end, cultural):\n" +
+    JSON.stringify(upcoming) +
+    "\n\n" +
+    'A parent asked: "' +
+    query +
+    '"\n\n' +
+    "Pick the events from the list above that actually answer this — usually 1 to 6 of them, " +
+    "fewer if only a couple truly fit, and an empty list if genuinely nothing matches (don't force it). " +
+    "Never invent an event that isn't in the list above. Write a short, warm, 1-2 sentence answer a busy " +
+    "parent would appreciate — plain conversational English, day names rather than raw dates.";
+
+  const apiRes = await fetch(ANTHROPIC_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": env.ANTHROPIC_API_KEY,
+      "anthropic-version": "2023-06-01",
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: MAX_OUTPUT_TOKENS,
+      temperature: 0,
+      tool_choice: { type: "tool", name: "answer_calendar_question" },
+      tools: [
+        {
+          name: "answer_calendar_question",
+          description: "Answer a parent's question about the calendar using only the events supplied.",
+          input_schema: {
+            type: "object",
+            properties: {
+              answer: { type: "string" },
+              eventIds: { type: "array", items: { type: "string" } },
+            },
+            required: ["answer", "eventIds"],
+          },
+        },
+      ],
+      messages: [{ role: "user", content: prompt }],
+    }),
+  });
+
+  if (!apiRes.ok) {
+    return json({ ok: false, note: "Something went wrong — try again in a moment." });
+  }
+  const data = await apiRes.json();
+
+  // Record actual spend (from the real usage the API reports) and this IP's
+  // count *before* returning isn't necessary — do it in the background so
+  // it never adds latency to the visitor's answer.
+  const usage = data.usage || {};
+  const cost =
+    ((usage.input_tokens || 0) / 1e6) * INPUT_PRICE_PER_MTOK +
+    ((usage.output_tokens || 0) / 1e6) * OUTPUT_PRICE_PER_MTOK;
+  ctx.waitUntil(
+    Promise.all([
+      env.ASK_BUDGET.put(mKey, String(spent + cost), { expirationTtl: 60 * 60 * 24 * 40 }),
+      env.ASK_BUDGET.put(dKey, String(ipCount + 1), { expirationTtl: 60 * 60 * 24 }),
+    ])
+  );
+
+  const toolUse = (data.content || []).find(
+    (b) => b.type === "tool_use" && b.name === "answer_calendar_question"
+  );
+  if (!toolUse) {
+    return json({ ok: false, note: "Couldn't quite understand that — try rephrasing?" });
+  }
+
+  return json({ ok: true, answer: toolUse.input.answer, eventIds: toolUse.input.eventIds || [] });
+}
