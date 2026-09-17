@@ -1,7 +1,19 @@
 {
   "name": "mandarin-playgroup",
   "compatibility_date": "2026-07-21",
+  // "main" runs before static assets are served, so worker.js can intercept
+  // POST /api/ask and otherwise fall through to the site exactly as before.
+  "main": "worker.js",
   "assets": {
-    "directory": "./"
-  }
+    "directory": "./",
+    // Required so worker.js can call env.ASSETS.fetch(...) itself (to serve
+    // everything that isn't /api/ask, and to read events.json server-side).
+    "binding": "ASSETS"
+  },
+  // Replace "REPLACE_WITH_YOUR_KV_NAMESPACE_ID" with the id printed by
+  // `wrangler kv namespace create ASK_BUDGET` (or shown on the namespace's
+  // page in the dashboard) — see SETUP.md, step 1.
+  "kv_namespaces": [
+    { "binding": "ASK_BUDGET", "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID" }
+  ]
 }
