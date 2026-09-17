@@ -10,10 +10,10 @@
     // everything that isn't /api/ask, and to read events.json server-side).
     "binding": "ASSETS"
   },
-  // Replace "REPLACE_WITH_YOUR_KV_NAMESPACE_ID" with the id printed by
+  // Replace "5a5f1dba9bec43f29cc53eb2ada423f1" with the id printed by
   // `wrangler kv namespace create ASK_BUDGET` (or shown on the namespace's
   // page in the dashboard) — see SETUP.md, step 1.
   "kv_namespaces": [
-    { "binding": "ASK_BUDGET", "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID" }
+    { "binding": "ASK_BUDGET", "id": "5a5f1dba9bec43f29cc53eb2ada423f1" }
   ]
 }
