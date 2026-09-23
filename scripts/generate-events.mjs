@@ -181,6 +181,21 @@ async function main() {
     }
   }
 
+  // Always-include playgroups (data/extra-playgroups.json): for events the
+  // Partiful profile fetch doesn't list. Skips anything already collected
+  // (matched by URL) and anything already over.
+  try {
+    const extras = readJson('data/extra-playgroups.json').events || [];
+    const have = new Set(collected.filter((e) => e.kind === 'playgroup').map((e) => e.url));
+    const add = extras
+      .filter((e) => !have.has(e.url) && new Date(e.end || e.start) >= today)
+      .map((e) => ({ ...e, kind: 'playgroup', cultural: 'mandarin', source: 'extra' }));
+    collected.push(...add);
+    if (add.length) log(`playgroups   ${String(add.length).padStart(4)} extra events from data/extra-playgroups.json`);
+  } catch (err) {
+    if (err.code !== 'ENOENT') log(`extra-playgroups.json skipped: ${err.message}`);
+  }
+
   // ── SFPL storytimes ────────────────────────────────────────────────────
   // SFPL runs ~25 branches, each with its own Families/Preschoolers storytime
   // most weeks — pulled in full that's 20-30+ near-duplicate listings on a

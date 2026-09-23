@@ -1,0 +1,13 @@
+{
+  "note": "Playgroups that should always appear on the site, even if the Partiful profile fetch doesn't list them (e.g. unlisted events). Merged in on every build; entries whose Partiful URL is already on the profile are skipped, and past entries drop off automatically. Remove an entry here if the event is cancelled.",
+  "events": [
+    {
+      "id": "mpg-partiful-f8gGdUTPzKDB6RPes8r8",
+      "title": "Mandarin Playgroup",
+      "venue": "Sue Bierman Park",
+      "start": "2026-10-03T10:00:00-07:00",
+      "end": "2026-10-03T12:00:00-07:00",
+      "url": "https://partiful.com/e/f8gGdUTPzKDB6RPes8r8"
+    }
+  ]
+}
