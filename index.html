@@ -283,6 +283,31 @@
   }
   footer a { color: var(--persimmon); text-decoration: none; font-weight: 700; }
 
+
+  /* ---------- Community photos ---------- */
+  .photo { margin: 0; }
+  .photo img { display: block; width: 100%; height: auto; border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 2px 0 var(--line); object-fit: cover; }
+  .photo figcaption { font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 0.9rem; color: var(--ink-soft); margin-top: 10px; }
+  .events-photo { margin: 28px 0 32px; }
+  .events-photo img { aspect-ratio: 2 / 1; object-position: center 70%; }
+  .band-photo { margin-bottom: 28px; }
+  .band-photo img { aspect-ratio: 2 / 1; object-position: center 22%; }
+  .special-side { display: grid; gap: 16px; }
+  .special-side .photo img { aspect-ratio: 4 / 3; object-position: 55% 88%; border-color: #D5E3F5; }
+  .carousel .car-viewport { position: relative; overflow: hidden; border-radius: 22px; border: 1px solid #D5E3F5; box-shadow: 0 2px 0 var(--line); touch-action: pan-y; }
+  .carousel .car-track { display: flex; transition: transform .35s ease; }
+  .carousel .car-track img { flex: 0 0 100%; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 0; border-radius: 0; box-shadow: none; }
+  .car-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: var(--ink); font-size: 1.6rem; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.18); display: grid; place-items: center; padding: 0 0 3px; }
+  .car-btn:focus-visible, .car-dots button:focus-visible { outline: 3px solid var(--blue, #4E8FD9); outline-offset: 2px; }
+  .car-prev { left: 10px; } .car-next { right: 10px; }
+  .car-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+  .car-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: #C3D3E8; cursor: pointer; }
+  .car-dots button[aria-selected="true"] { background: var(--ink); width: 22px; border-radius: 5px; }
+  @media (prefers-reduced-motion: reduce) { .carousel .car-track { transition: none; } }
+  @media (max-width: 780px) {
+    .events-photo img { aspect-ratio: 4 / 3; }
+    .band-photo img { aspect-ratio: 4 / 3; }
+  }
   @media (max-width: 780px) {
     .nav-toggle { display: inline-flex; }
     .nav-links {
@@ -698,16 +723,32 @@
       <div>
         <h2>Special events are part of the playgroup 🎉</h2>
         <p>Beyond our regular playground meetups, we bring Mandarin to life through special experiences — from storytimes and music classes to seasonal celebrations and more.</p>
-        <p style="margin-top:12px;">We hosted Music Together's first-ever music class in Mandarin for the Mandarin Playgroup community, and we're excited to keep offering more enriching opportunities.</p>
+        <p style="margin-top:12px;">We partnered with Music Together to bring their first-ever music class in Mandarin to our community, and we're excited to keep offering more enriching opportunities.</p>
         <p style="margin-top:12px;">Do you sing, tell stories, perform, teach, or create experiences for children in Mandarin? Or does your organization have something special to offer Bay Area families? We'd love to hear from you.</p>
         <p style="margin-top:16px;"><a href="#contact" style="font-family:'Fredoka',sans-serif; font-weight:600; color:var(--persimmon); text-decoration:none; border-bottom:2px solid var(--persimmon); padding-bottom:2px;">Reach out about an event or partnership →</a></p>
       </div>
+      <div class="special-side">
+        <figure class="photo carousel" id="mt-carousel" aria-roledescription="carousel" aria-label="Photos from the Music Together class">
+          <div class="car-viewport">
+            <div class="car-track">
+              <img src="images/special-guitar.jpg" alt="A song leader playing guitar for kids and parents seated on the grass">
+              <img src="images/hero-circle.jpg" alt="Families sitting in a big circle on the grass, kids playing rhythm sticks" loading="lazy">
+              <img src="images/scarves.jpg" alt="Toddlers and parents waving colorful scarves together" loading="lazy">
+              <img src="images/about-instruments.jpg" alt="Kids gathered around a pile of instruments, playing together" loading="lazy">
+            </div>
+            <button class="car-btn car-prev" type="button" aria-label="Previous photo">&#8249;</button>
+            <button class="car-btn car-next" type="button" aria-label="Next photo">&#8250;</button>
+          </div>
+          <div class="car-dots" role="tablist" aria-label="Choose photo"></div>
+          <figcaption>Music Together hosted its first-ever Mandarin music class exclusively for the Mandarin Playgroup community!</figcaption>
+        </figure>
       <ul>
         <li>Mandarin music, storytime &amp; performances</li>
         <li>Member-led activities and enrichment</li>
         <li>Special classes and family experiences</li>
         <li>Community partnerships, perks &amp; group discounts</li>
       </ul>
+      </div>
     </div>
   </section>
    <section id="contact">
@@ -865,5 +906,23 @@
   </section>
 </div>
 
+<script>
+(function(){
+  var c=document.getElementById('mt-carousel'); if(!c) return;
+  var track=c.querySelector('.car-track'), slides=track.children, n=slides.length, i=0, dots=c.querySelector('.car-dots');
+  var pos=['55% 88%','center 70%','center 30%','center 50%'];
+  for(var k=0;k<n;k++){ slides[k].style.objectPosition=pos[k]||'center';
+    var d=document.createElement('button'); d.type='button'; d.setAttribute('role','tab'); d.setAttribute('aria-label','Photo '+(k+1)+' of '+n);
+    (function(k){ d.addEventListener('click',function(){go(k);}); })(k); dots.appendChild(d); }
+  function go(k){ i=(k+n)%n; track.style.transform='translateX(-'+(i*100)+'%)';
+    for(var j=0;j<n;j++){ dots.children[j].setAttribute('aria-selected', j===i?'true':'false'); slides[j].setAttribute('aria-hidden', j===i?'false':'true'); } }
+  c.querySelector('.car-prev').addEventListener('click',function(){go(i-1);});
+  c.querySelector('.car-next').addEventListener('click',function(){go(i+1);});
+  c.addEventListener('keydown',function(e){ if(e.key==='ArrowLeft') go(i-1); if(e.key==='ArrowRight') go(i+1); });
+  var x0=null; c.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+  c.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40) go(dx<0?i+1:i-1); x0=null; });
+  go(0);
+})();
+</script>
 </body>
 </html>
