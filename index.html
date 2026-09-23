@@ -294,6 +294,16 @@
   .band-photo img { aspect-ratio: 2 / 1; object-position: center 22%; }
   .special-side { display: grid; gap: 16px; }
   .special-side .photo img { aspect-ratio: 4 / 3; object-position: 55% 88%; border-color: #D5E3F5; }
+  /* Special events layout: text | carousel on top, the four offerings as a full-width row below */
+  .special { align-items: start; row-gap: 32px; grid-template-columns: 1fr 1fr; }
+  .special-side { gap: 0; }
+  .special .special-list { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
+  .special .special-list li { align-items: flex-start; }
+  .special .special-list li::before { margin-top: 5px; }
+  .carousel figcaption { font-family: 'Nunito', sans-serif; font-weight: 400; font-size: 0.88rem; color: var(--ink-soft); text-align: center; margin-top: 8px; line-height: 1.45; }
+  .car-dots { margin-top: 12px; }
+  @media (max-width: 980px) { .special .special-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 780px) { .special .special-list { grid-template-columns: 1fr; } .special-side { order: -1; } }
   .carousel .car-viewport { position: relative; overflow: hidden; border-radius: 22px; border: 1px solid #D5E3F5; box-shadow: 0 2px 0 var(--line); touch-action: pan-y; }
   .carousel .car-track { display: flex; transition: transform .35s ease; }
   .carousel .car-track img { flex: 0 0 100%; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 0; border-radius: 0; box-shadow: none; }
@@ -760,13 +770,13 @@
           <div class="car-dots" role="tablist" aria-label="Choose photo"></div>
           <figcaption>Music Together hosted its first-ever Mandarin music class exclusively for the Mandarin Playgroup community!</figcaption>
         </figure>
-      <ul>
+      </div>
+      <ul class="special-list">
         <li>Mandarin music, storytime &amp; performances</li>
         <li>Member-led activities and enrichment</li>
         <li>Special classes and family experiences</li>
         <li>Community partnerships, perks &amp; group discounts</li>
       </ul>
-      </div>
     </div>
   </section>
    <section id="contact">
