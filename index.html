@@ -86,7 +86,7 @@
   /* Mobile menu toggle — hidden on desktop, shown under 780px (see media query) */
   .nav-toggle {
     display: none;
-    align-items: center; justify-content: center;
+    flex-direction: column; align-items: center; justify-content: center;
     width: 44px; height: 44px;
     background: none; border: none; cursor: pointer; border-radius: 10px;
     -webkit-tap-highlight-color: transparent;
@@ -322,6 +322,12 @@
     .nav-links.open { display: flex; }
     .nav-links a { padding: 12px 14px; border-radius: 10px; }
     .nav-links a:hover, .nav-links a:focus-visible { background: var(--paper); color: var(--persimmon); }
+    .nav-toggle:hover { background: none; }
+    .nav-links { top: 70px; padding: 8px; gap: 0; }
+    .nav-links a { font-family: 'Fredoka', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--ink); padding: 14px 16px; border-radius: 0; }
+    .nav-links a + a { border-top: 1px solid var(--line); }
+    .nav-links a[href="#newsletter"] { order: 99; margin-top: 8px; border-top: 0; border-radius: 999px; text-align: center; background: var(--persimmon); color: #fff; box-shadow: 0 4px 0 var(--persimmon-deep); }
+    .nav-links a[href="#newsletter"]:hover, .nav-links a[href="#newsletter"]:focus-visible { background: var(--persimmon); color: #fff; }
     .about-grid, .special { grid-template-columns: 1fr; }
     .news, .special, .contact-card { padding: 40px 24px; }
   }
@@ -346,7 +352,7 @@
     </a>
     <div class="nav-links" id="nav-links">
       <a href="#events">Playdates</a>
-      <a href="#newsletter">Join the Playgroup</a>
+      <a href="#newsletter">Join the community</a>
       <a href="#contact">Contact</a>
       <a href="#about">About</a>
       <a href="/calendar">Calendar</a>
