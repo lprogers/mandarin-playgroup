@@ -6844,6 +6844,23 @@ a.mpgcal-ev .mpgcal-venue::after{
 }
 .mpgcal-ask-btn:hover{background:var(--mpgcal-persimmon-deep);}
 .mpgcal-ask-btn:disabled{opacity:.6;cursor:default;}
+.mpgcal-ask-mic{
+  flex:0 0 auto;width:44px;height:44px;border-radius:50%;padding:0;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1.5px solid var(--mpgcal-border);background:var(--mpgcal-cream);color:var(--mpgcal-ink);
+  transition:border-color .15s ease,background .15s ease,color .15s ease;
+}
+.mpgcal-ask-mic[hidden]{display:none;}
+.mpgcal-ask-mic:hover{border-color:var(--mpgcal-persimmon);}
+.mpgcal-ask-mic:focus-visible{outline:2.5px solid var(--mpgcal-persimmon);outline-offset:1px;}
+.mpgcal-ask-mic:disabled{opacity:.6;cursor:default;}
+.mpgcal-ask-mic svg{width:20px;height:20px;}
+.mpgcal-ask-mic[data-state="recording"]{
+  background:var(--mpgcal-persimmon);border-color:var(--mpgcal-persimmon);color:#fff;
+  animation:mpgcal-mic-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mpgcal-mic-pulse{50%{box-shadow:0 0 0 8px rgba(0,0,0,.08);}}
+@media (prefers-reduced-motion:reduce){.mpgcal-ask-mic[data-state="recording"]{animation:none;}}
 .mpgcal-ask-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
 .mpgcal-ask-chip{
   font-family:inherit;font-size:.82rem;padding:6px 14px;border-radius:999px;
@@ -7229,6 +7246,10 @@ body{
       <form class="mpgcal-ask-form" data-mpgcal-ask-form>
         <input class="mpgcal-ask-input" type="text" data-mpgcal-ask-input
                placeholder="e.g. events for a 3 year old next week" autocomplete="off" maxlength="200">
+        <button class="mpgcal-ask-mic" type="button" data-mpgcal-ask-mic hidden
+                aria-label="Ask by voice" data-state="idle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v4"/></svg>
+        </button>
         <button class="mpgcal-ask-btn" type="submit">Ask</button>
       </form>
       <div class="mpgcal-ask-chips" data-mpgcal-ask-chips></div>
@@ -7601,6 +7622,14 @@ document.addEventListener("DOMContentLoaded", function(){
   var askAnswer  = document.querySelector("[data-mpgcal-ask-answer]");
   var askBtn     = askForm ? askForm.querySelector(".mpgcal-ask-btn") : null;
   var askCtl     = null;
+  var askSource  = "typed"; // typed | chip | voice — recorded with each question
+
+  /* Usage tracking: Mixpanel if the page's analytics.js provides it, plus
+     anonymous daily counters on the Worker (/api/event) as ground truth. */
+  function mpgTrack(name, props){
+    try{ if(window.mixpanel && window.mixpanel.track) window.mixpanel.track(name, props||{}); }catch(e){}
+    try{ if(navigator.sendBeacon) navigator.sendBeacon("/api/event", JSON.stringify({name:name})); }catch(e){}
+  }
 
   function feedItemToCardShape(it){
     var sp = ptParts(new Date(it.start));
@@ -7638,6 +7667,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function runAsk(query){
     query = (query||"").trim();
     if(!query || !askBtn) return;
+    mpgTrack("ask_submitted", { source: askSource });
     if(askCtl) askCtl.abort();
     askCtl = new AbortController();
     askBtn.disabled = true;
@@ -7669,12 +7699,87 @@ document.addEventListener("DOMContentLoaded", function(){
      "Music or storytime this week", "Toddler swim times this week"].forEach(function(q){
       var b = document.createElement("button");
       b.type = "button"; b.className = "mpgcal-ask-chip"; b.textContent = q;
-      b.addEventListener("click", function(){ askInput.value = q; runAsk(q); });
+      b.addEventListener("click", function(){ askInput.value = q; askSource = "chip"; runAsk(q); });
       askChips.appendChild(b);
     });
+    askInput.addEventListener("input", function(){ askSource = "typed"; });
     askForm.addEventListener("submit", function(e){
       e.preventDefault();
       runAsk(askInput.value);
+    });
+  }
+
+  /* ── Voice input — record a short clip, Worker sends it to Deepgram
+     (/api/transcribe), the transcript fills the box and asks. Hidden in
+     browsers that can't record audio, so nothing breaks there. ───────── */
+  var askMic = askForm ? askForm.querySelector("[data-mpgcal-ask-mic]") : null;
+  if(askMic && askInput && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder){
+    var MAX_REC_MS = 15000;
+    var rec = null, recStream = null, recChunks = [], recT0 = 0, recTimer = null, recReason = "manual", micBusy = false;
+    askMic.hidden = false;
+    mpgTrack("voice_mic_shown");
+
+    var micStatus = function(msg){ askStatus.textContent = msg || ""; askStatus.hidden = !msg; };
+    var micState = function(st){
+      askMic.setAttribute("data-state", st);
+      askMic.setAttribute("aria-label", st === "recording" ? "Stop recording" : "Ask by voice");
+    };
+    var stopRec = function(){
+      clearTimeout(recTimer);
+      if(rec && rec.state === "recording") rec.stop();
+    };
+    var onRecStop = function(){
+      recStream.getTracks().forEach(function(t){ t.stop(); });
+      mpgTrack("voice_recording_stopped", { duration_ms: Date.now() - recT0, reason: recReason });
+      var mime = (rec.mimeType || "audio/webm").split(";")[0]; // Safari: audio/mp4, Chrome: audio/webm
+      var blob = new Blob(recChunks, { type: mime });
+      micState("idle");
+      if(blob.size < 2000){ micStatus("Didn't catch that \u2014 try again, or type your question."); return; }
+      micBusy = true; askMic.disabled = true; micStatus("Transcribing\u2026");
+      var t0 = performance.now();
+      fetch("/api/transcribe", { method:"POST", headers:{"content-type":mime}, body: blob })
+        .then(function(r){
+          if(!r.ok){ var e = new Error("http"); e.status = r.status; throw e; }
+          return r.json();
+        })
+        .then(function(d){
+          var text = ((d && d.transcript) || "").trim();
+          mpgTrack("voice_transcript_received", { latency_ms: Math.round(performance.now() - t0), chars: text.length, empty: !text });
+          if(!text){ micStatus("Didn't catch that \u2014 try again, or type your question."); return; }
+          askInput.value = text.slice(0, 200);
+          askSource = "voice";
+          micStatus("");
+          runAsk(askInput.value);
+        })
+        .catch(function(err){
+          var st = (err && err.status) || 0;
+          mpgTrack("voice_transcribe_failed", { status: st });
+          micStatus((st === 429 || st === 503)
+            ? "Voice input is unavailable right now \u2014 please type your question."
+            : "Couldn't transcribe that \u2014 please type your question instead.");
+        })
+        .then(function(){ micBusy = false; askMic.disabled = false; });
+    };
+    var startRec = function(){
+      mpgTrack("voice_mic_tapped");
+      navigator.mediaDevices.getUserMedia({ audio:true }).then(function(stream){
+        recStream = stream; recChunks = []; recReason = "manual";
+        rec = new MediaRecorder(stream);
+        rec.ondataavailable = function(e){ if(e.data && e.data.size) recChunks.push(e.data); };
+        rec.onstop = onRecStop;
+        rec.start();
+        recT0 = Date.now();
+        recTimer = setTimeout(function(){ recReason = "timeout"; stopRec(); }, MAX_REC_MS);
+        micState("recording");
+        micStatus("Listening\u2026 tap the mic again when you're done.");
+      }).catch(function(err){
+        mpgTrack("voice_permission_denied", { error: err && err.name });
+        micStatus("The mic is blocked. Check your browser's permission, or just type your question.");
+      });
+    };
+    askMic.addEventListener("click", function(){
+      if(micBusy) return;
+      if(rec && rec.state === "recording") stopRec(); else startRec();
     });
   }
 })();
