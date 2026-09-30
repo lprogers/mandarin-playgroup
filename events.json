@@ -234,17 +234,6 @@
       "source": "recurring"
     },
     {
-      "id": "mpg-partiful-f8gGdUTPzKDB6RPes8r8",
-      "title": "Mandarin Playgroup",
-      "venue": "Sue Bierman Park",
-      "start": "2026-10-03T10:00:00-07:00",
-      "end": "2026-10-03T12:00:00-07:00",
-      "url": "https://partiful.com/e/f8gGdUTPzKDB6RPes8r8",
-      "kind": "playgroup",
-      "cultural": "mandarin",
-      "source": "extra"
-    },
-    {
       "id": "sfpl-storytime-families-2026-10-03",
       "kind": "library",
       "title": "Storytime: For Families",
