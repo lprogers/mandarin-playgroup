@@ -234,10 +234,6 @@ I then incorporated AI directly into the product:
 - AI-grounded responses using live product data
 - AI-oriented content and structured data for discoverability
 
-The distinction matters:
-
-**AI wasn't just used to build the product faster. It became part of the product's value proposition and operating model.**
-
 ---
 
 ## Traction
@@ -264,9 +260,9 @@ AI should either make the product significantly better or make the operation sig
 
 When accuracy matters, retrieve current product data rather than relying on model knowledge alone.
 
-### Automate the workflow, not the sake of automation
+### Automate the workflow, but only when it provides value
 
-Automation should remove meaningful recurring work. If a manual step is cheaper, more reliable, and doesn't yet create meaningful operational drag, keep it manual.
+Automate where it creates leverage, not simply because you can. If a manual step is cheaper, more reliable, or gives you greater flexibility while the product is evolving, keep it manual.
 
 ### Keep the product simple
 
