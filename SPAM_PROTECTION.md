@@ -14,9 +14,7 @@ Bots caught by checks 1, 2 and 4 get a fake "success" response, so they can't te
 
 ## Files
 
-- `src/forms.js`: the checks and the forwarding to Jotform
-- `worker.js`: the site's Worker; routes `/api/signup`, `/api/contact` and `/api/config` to `src/forms.js`
-- `.assetsignore`: keeps `src/` from being served as public files
+- `_worker.js`: the code the live site (Cloudflare Pages) runs. The spam checks are at the bottom of this file
 
 ## One-time setup
 
@@ -28,7 +26,7 @@ Until the settings below are added, the honeypot, fill-time and link checks alre
    - Re-connect Google Sheets if you use it.
    - Make sure Settings → "Unique Submission" is **off**. Every submission now comes from a Cloudflare address, so an IP-based limit would block real people.
    - Note each new form ID (the number in the form's URL).
-3. **Cloudflare variables:** Workers & Pages → mandarin-playgroup → Settings → Variables and Secrets. Add:
+3. **Cloudflare variables:** Workers & Pages → mandarin-playgroup (the Pages project) → Settings → Variables and Secrets. Add all four as type Secret:
    - `TURNSTILE_SITE_KEY` as Text
    - `TURNSTILE_SECRET`, `JOTFORM_SIGNUP_ID` and `JOTFORM_CONTACT_ID` as Secret
 
