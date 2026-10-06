@@ -638,15 +638,18 @@
           .mpg-error { color: #C23E29; font-size: 13px; margin-top: 5px; display: none; }
           .mpg-field.invalid .mpg-error { display: block; }
           .mpg-field.invalid .mpg-input, .mpg-field.invalid .mpg-textarea { border-color: #C23E29; }
+          .mpg-turnstile { margin-top: 16px; }
+          .mpg-turnstile:empty { margin-top: 0; }
+          .mpg-form-error { color: #C23E29; font-family: 'Nunito', sans-serif; font-size: 14px; text-align: center; margin-top: 12px; }
+          .mpg-form-error:empty { display: none; }
           .mpg-success { display: none; text-align: center; padding: 28px 8px; font-family: 'Nunito', sans-serif; }
           .mpg-success h3 { font-family: 'Fredoka', sans-serif; color: #2B2B33; font-size: 22px; margin: 0 0 8px; }
           .mpg-success p { color: #6B6B75; margin: 0; line-height: 1.6; }
         </style>
 
         <div class="mpg-form-card">
-          <form class="mpg-form" action="https://submit.jotform.com/submit/262057950093055" method="POST" target="mpg-signup-sink" novalidate>
-            <input type="hidden" name="formID" value="262057950093055">
-            <input type="hidden" name="simple_spc" value="262057950093055-262057950093055">
+          <form class="mpg-form" action="/api/signup" method="POST" novalidate>
+            <input type="hidden" name="_elapsed" value="">
             <input type="text" name="website" value="" tabindex="-1" aria-hidden="true" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
 
             <div class="mpg-field" data-field="name">
@@ -697,6 +700,9 @@
               <input class="mpg-input" id="mpg-other-text" name="q8_q8_checkbox6[other]" type="text" placeholder="How'd you find us?" disabled style="display:none; margin-top:10px;">
             </div>
 
+            <div class="mpg-turnstile" data-turnstile></div>
+            <div class="mpg-form-error" role="alert"></div>
+
             <div class="mpg-submit-wrap">
               <button class="mpg-submit" type="submit">Join the Playgroup</button>
             </div>
@@ -708,13 +714,75 @@
           </div>
         </div>
 
-        <iframe name="mpg-signup-sink" style="display:none" title="form target"></iframe>
+<script>
+/* Spam protection shared by the signup and contact forms.
+   Forms post to /api/* on our own site; a Cloudflare Worker checks the
+   honeypot, fill time and Turnstile before forwarding to Jotform. */
+window.mpgForms = (function () {
+  var loadedAt = Date.now();
+  var widgets = [];
+  var configPromise = fetch('/api/config', { headers: { Accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : {}; })
+    .catch(function () { return {}; });
+
+  configPromise.then(function (cfg) {
+    if (!cfg || !cfg.turnstileSiteKey) return;
+    window.mpgTurnstileReady = function () {
+      document.querySelectorAll('[data-turnstile]').forEach(function (el) {
+        var id = window.turnstile.render(el, {
+          sitekey: cfg.turnstileSiteKey,
+          appearance: 'interaction-only',
+          size: 'flexible'
+        });
+        widgets.push({ el: el, id: id });
+      });
+    };
+    var sc = document.createElement('script');
+    sc.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=mpgTurnstileReady';
+    sc.async = true; sc.defer = true;
+    document.head.appendChild(sc);
+  });
+
+  function resetWidget(form) {
+    if (!window.turnstile) return;
+    widgets.forEach(function (w) { if (form.contains(w.el)) window.turnstile.reset(w.id); });
+  }
+
+  // opts: { endpoint, validate(form) -> bool, onSuccess(), button, errorEl }
+  function attach(form, opts) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      opts.errorEl.textContent = '';
+      if (!opts.validate()) return;
+      form.querySelector('[name="_elapsed"]').value = String(Date.now() - loadedAt);
+      opts.button.disabled = true;
+      fetch(opts.endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.json().catch(function () { return { ok: false }; }).then(function (d) { return { status: r.status, data: d }; }); })
+        .then(function (res) {
+          if (res.data && res.data.ok) { opts.onSuccess(); return; }
+          var msg = res.status === 403
+            ? 'We couldn’t verify you’re human. Please try again.'
+            : 'Something went wrong. Please try again, or email hello@mandarinplaygroup.com.';
+          if (res.data && res.data.error === 'invalid_email') msg = 'Please enter a valid email.';
+          throw { userMsg: msg };
+        })
+        .catch(function (err) {
+          opts.errorEl.textContent = (err && err.userMsg) ||
+            'Something went wrong. Please try again, or email hello@mandarinplaygroup.com.';
+          opts.button.disabled = false;
+          resetWidget(form);
+        });
+    });
+  }
+
+  return { attach: attach };
+})();
+</script>
 
         <script>
         (function () {
           var form    = document.querySelector('#signupForm .mpg-form');
           var success = document.querySelector('#signupForm .mpg-success');
-          var submitted = false;
           var otherToggle = document.getElementById('mpg-other-toggle');
           var otherText   = document.getElementById('mpg-other-text');
           otherToggle.addEventListener('change', function () {
@@ -725,21 +793,23 @@
             var el = form.querySelector('.mpg-field[data-field="' + f + '"]');
             if (el) el.classList.toggle('invalid', bad);
           }
-          form.addEventListener('submit', function (e) {
-            var name  = form.querySelector('[name="q2_q2_textbox0"]').value.trim();
-            var email = form.querySelector('[name="q7_q7_email5"]').value.trim();
-            var nameOk  = name.length > 0;
-            var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            setInvalid('name', !nameOk);
-            setInvalid('email', !emailOk);
-            if (!nameOk || !emailOk) { e.preventDefault(); return; }
-            submitted = true;
-            form.querySelector('.mpg-submit').disabled = true;
-          });
-          document.querySelector('iframe[name="mpg-signup-sink"]').addEventListener('load', function () {
-            if (!submitted) return;
-            form.style.display = 'none';
-            success.style.display = 'block';
+          window.mpgForms.attach(form, {
+            endpoint: '/api/signup',
+            button: form.querySelector('.mpg-submit'),
+            errorEl: form.querySelector('.mpg-form-error'),
+            validate: function () {
+              var name  = form.querySelector('[name="q2_q2_textbox0"]').value.trim();
+              var email = form.querySelector('[name="q7_q7_email5"]').value.trim();
+              var nameOk  = name.length > 0;
+              var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+              setInvalid('name', !nameOk);
+              setInvalid('email', !emailOk);
+              return nameOk && emailOk;
+            },
+            onSuccess: function () {
+              form.style.display = 'none';
+              success.style.display = 'block';
+            }
           });
         })();
         </script>
@@ -810,15 +880,18 @@
         .mpgc-error { color: #C23E29; font-size: 13px; margin-top: 5px; display: none; }
         .mpgc-field.invalid .mpgc-error { display: block; }
         .mpgc-field.invalid .mpgc-input, .mpgc-field.invalid .mpgc-textarea { border-color: #C23E29; }
+        .mpgc-turnstile { margin-top: 16px; }
+        .mpgc-turnstile:empty { margin-top: 0; }
+        .mpgc-form-error { color: #C23E29; font-family: 'Nunito', sans-serif; font-size: 14px; text-align: center; margin-top: 12px; }
+        .mpgc-form-error:empty { display: none; }
         .mpgc-success { display: none; text-align: center; padding: 28px 8px; font-family: 'Nunito', sans-serif; }
         .mpgc-success h3 { font-family: 'Fredoka', sans-serif; color: #2B2B33; font-size: 22px; margin: 0 0 8px; }
         .mpgc-success p { color: #6B6B75; margin: 0; line-height: 1.6; }
       </style>
 
       <div class="mpgc-form-card">
-        <form class="mpgc-form" action="https://submit.jotform.com/submit/262016274308149" method="POST" target="mpgc-contact-sink" novalidate>
-          <input type="hidden" name="formID" value="262016274308149">
-          <input type="hidden" name="simple_spc" value="262016274308149-262016274308149">
+        <form class="mpgc-form" action="/api/contact" method="POST" novalidate>
+          <input type="hidden" name="_elapsed" value="">
           <input type="text" name="website" value="" tabindex="-1" aria-hidden="true" autocomplete="off" style="position:absolute; left:-9999px; width:1px; height:1px;">
 
           <div class="mpgc-field" data-field="name">
@@ -848,6 +921,9 @@
             <div class="mpgc-error">Please add a short message.</div>
           </div>
 
+          <div class="mpgc-turnstile" data-turnstile></div>
+          <div class="mpgc-form-error" role="alert"></div>
+
           <div class="mpgc-submit-wrap">
             <button class="mpgc-submit" type="submit">Submit</button>
           </div>
@@ -859,32 +935,32 @@
         </div>
       </div>
 
-      <iframe name="mpgc-contact-sink" style="display:none" title="form target"></iframe>
 
       <script>
       (function () {
         var form    = document.querySelector('#contact .mpgc-form');
         var success = document.querySelector('#contact .mpgc-success');
-        var submitted = false;
         function setInvalid(f, bad) {
           var el = form.querySelector('.mpgc-field[data-field="' + f + '"]');
           if (el) el.classList.toggle('invalid', bad);
         }
-        form.addEventListener('submit', function (e) {
-          var email = form.querySelector('[name="q7_email"]').value.trim();
-          var msg   = form.querySelector('[name="q4_message4"]').value.trim();
-          var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-          var msgOk   = msg.length > 0;
-          setInvalid('email', !emailOk);
-          setInvalid('message', !msgOk);
-          if (!emailOk || !msgOk) { e.preventDefault(); return; }
-          submitted = true;
-          form.querySelector('.mpgc-submit').disabled = true;
-        });
-        document.querySelector('iframe[name="mpgc-contact-sink"]').addEventListener('load', function () {
-          if (!submitted) return;
-          form.style.display = 'none';
-          success.style.display = 'block';
+        window.mpgForms.attach(form, {
+          endpoint: '/api/contact',
+          button: form.querySelector('.mpgc-submit'),
+          errorEl: form.querySelector('.mpgc-form-error'),
+          validate: function () {
+            var email = form.querySelector('[name="q7_email"]').value.trim();
+            var msg   = form.querySelector('[name="q4_message4"]').value.trim();
+            var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            var msgOk   = msg.length > 0;
+            setInvalid('email', !emailOk);
+            setInvalid('message', !msgOk);
+            return emailOk && msgOk;
+          },
+          onSuccess: function () {
+            form.style.display = 'none';
+            success.style.display = 'block';
+          }
         });
       })();
       </script>

@@ -32,7 +32,12 @@
  *     per-IP daily count (separate from /api/ask's) so using the mic
  *     doesn't halve a visitor's number of questions.
  *
- *  3. Everything else — served as-is from the static site (env.ASSETS),
+ *  3. POST /api/signup and POST /api/contact — spam filter in front of the
+ *     Jotform signup and contact forms (honeypot, fill time, Turnstile), see
+ *     src/forms.js and SPAM_PROTECTION.md. GET /api/config gives the page
+ *     the public Turnstile site key.
+ *
+ *  4. Everything else — served as-is from the static site (env.ASSETS),
  *     completely unchanged from before this file existed.
  *
  * Requires, set up once in the Cloudflare dashboard (see SETUP.md):
@@ -47,6 +52,8 @@
  *                           counter, both per-IP daily counters, and the
  *                           usage counters (stat:* keys).
  */
+
+import { handleConfig, handleFormPost } from "./src/forms.js";
 
 const MODEL = "claude-haiku-4-5-20251001";
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
@@ -113,6 +120,19 @@ export default {
         return await handleVoice(request, env, url);
       } catch (err) {
         return json({ ok: false, note: "Something went wrong — please type your question instead." }, 500);
+      }
+    }
+
+    if (url.pathname === "/api/config") {
+      return handleConfig(env);
+    }
+
+    const formMatch = url.pathname.match(/^\/api\/(signup|contact)\/?$/);
+    if (formMatch) {
+      try {
+        return await handleFormPost(request, env, formMatch[1]);
+      } catch (err) {
+        return json({ ok: false, error: "server" }, 500);
       }
     }
 
