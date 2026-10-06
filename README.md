@@ -1,6 +1,6 @@
 # Mandarin PlayGroup 
 
-**A community platform connecting 140+ Bay Area families so kids can hear and use Mandarin naturally through play.**
+**A community platform connecting 160+ Bay Area families so kids can hear and use Mandarin naturally through play.**
 
 Live at [mandarinplaygroup.com](https://mandarinplaygroup.com/)
 
@@ -34,7 +34,7 @@ I started Mandarin Playgroup because I was looking for weekend opportunities for
 
 As the community grew, I looked for ways to expand what families could experience together. A community member hosted a Mandarin storytime, and I partnered with Music Together to bring its first Mandarin music class to our community - creating additional opportunities for families to experience Mandarin together beyond the playground.
 
-The community grew to **140+ Bay Area families**, with playdates and activities across San Francisco, the East Bay, the Peninsula, and the South Bay.
+The community grew to **160+ Bay Area families**, with playdates and activities across San Francisco, the East Bay, the Peninsula, and the South Bay.
 
 That initial community became the foundation for a broader product: helping families not only **find each other**, but also **find things to do together.**
 
@@ -238,7 +238,7 @@ I then incorporated AI directly into the product:
 
 ## Traction
 
-- **140+ Bay Area families** joined within two months of launch
+- **160+ Bay Area families** joined within two months of launch
 - **#1 Google result across branded and high-intent searches** for queries including "mandarin playgroup," "mandarin playgroup san francisco," "mandarin playgroup bay area," "mandarin playgroup peninsula," "mandarin playgroup south bay," and "mandarin families community sf"
 - **70+ family events** aggregated from **10+ sources**
 - Calendar data refreshed automatically **twice daily**
