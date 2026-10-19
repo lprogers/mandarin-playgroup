@@ -30,6 +30,7 @@ import { fetchPlaygroups, fetchPastPlaygroups } from './sources/partiful.mjs';
 import { fetchSfplEvents } from './sources/sfpl.mjs';
 import { fetchChineseCultureEvents } from './sources/chinese-culture.mjs';
 import { renderList, renderJsonLd, injectBetween } from './lib/prerender.mjs';
+import { dedupeAcrossSources } from './lib/dedupe.mjs';
 import { renderPlaydateCards, renderPastPlaydateCards } from './lib/playdates.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -82,11 +83,11 @@ function validate(events) {
 function filterSfplEvents(events, { maxPerDay = 8 } = {}) {
   const isStorytime = (e) => /storytime/i.test(e.title);
   const isFamiliesOrPreschoolers = (e) => /famil|preschool/i.test(e.title);
-  const isCanceled = (e) => /canceled/i.test(e.title);
+  const isCanceled = (e) => /cancel+ed|postponed/i.test(e.title);
   const isMain = (e) => /^main /i.test(e.venue);
 
   const always = events.filter(
-    (e) => e.cultural || (isStorytime(e) && isMain(e) && !isCanceled(e))
+    (e) => !isCanceled(e) && (e.cultural || (isStorytime(e) && isMain(e)))
   );
   const alwaysIds = new Set(always.map((e) => e.id));
 
@@ -240,6 +241,20 @@ async function main() {
   // validity windows as short as two weeks. There is no feed to read. The
   // realistic options are recurrence rules in data/recurring.json, reviewed
   // when schedules turn over, or nothing. Not a stub — deliberately absent.
+
+  // ── Cross-source dedupe ────────────────────────────────────────────────
+  // Each source drops its own repeats; this catches the same real event
+  // arriving from two different sources (e.g. a Mandarin storytime listed on
+  // both sfpl.org and a cultural org's page). See lib/dedupe.mjs.
+  {
+    const { events: deduped, merged } = dedupeAcrossSources(collected);
+    for (const { kept, dropped } of merged) {
+      log(`  dedupe: kept ${kept.source} "${kept.title}" — dropped ${dropped.source} "${dropped.title}" (${kept.start.slice(0, 16)})`);
+    }
+    if (merged.length) log(`dedupe       ${String(merged.length).padStart(4)} cross-source duplicate(s) removed`);
+    collected.length = 0;
+    collected.push(...deduped);
+  }
 
   // ── Validate ───────────────────────────────────────────────────────────
   const problems = validate(collected);
