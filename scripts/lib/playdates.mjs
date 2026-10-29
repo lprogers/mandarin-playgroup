@@ -61,7 +61,7 @@ function cardHtml(e, i, { past = false } = {}) {
   const evening = hh >= 16;
   const desc = past ? (evening ? EVENING_RECAP : DAYTIME_RECAP) : '';
   const cardClass = past ? 'card card--past' : 'card';
-  const cta = past ? 'See on Partiful →' : 'RSVP on Partiful →';
+  const cta = past ? 'See details →' : 'RSVP →';
 
   return `<article class="${cardClass}">
   <div class="card-date"><div class="mo">${MON[mo - 1]}</div><div class="day">${d}</div></div>
