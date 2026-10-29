@@ -44,10 +44,9 @@ const DOODLES = [
   '<path d="M8 46 A46 46 0 0 1 100 46" fill="none" stroke="#F5B62F" stroke-width="6" stroke-linecap="round"/><rect x="46" y="10" width="22" height="22" rx="5" fill="#4C9A6B"/>',
 ];
 
-// The hand-written cards used evening-appropriate copy for after-work
-// playdates and daytime copy for weekend-morning ones — keep that split.
-const DAYTIME_DESC = 'Come for an hour or stay the whole time — drop in whenever works for you!';
-const EVENING_DESC = 'An after-work, after-daycare playdate — come for as long as works for you!';
+// Upcoming cards carry no description: the drop-in note (and "look for the
+// red nametags") lives once in the section intro in index.html, so cards
+// don't repeat the same line and no per-venue copy has to be written.
 
 // Past events can't invite anyone to "come by" — recap copy instead, still
 // split morning/evening so it doesn't read as a template.
@@ -60,9 +59,7 @@ function cardHtml(e, i, { past = false } = {}) {
   const when = `${weekday(e.start)}, ${LONG_MON[mo - 1]} ${d} · ${clock(e.start)}` +
     (e.end ? ` – ${clock(e.end)}` : '');
   const evening = hh >= 16;
-  const desc = past
-    ? (evening ? EVENING_RECAP : DAYTIME_RECAP)
-    : (evening ? EVENING_DESC : DAYTIME_DESC);
+  const desc = past ? (evening ? EVENING_RECAP : DAYTIME_RECAP) : '';
   const cardClass = past ? 'card card--past' : 'card';
   const cta = past ? 'See on Partiful →' : 'RSVP on Partiful →';
 
@@ -74,8 +71,7 @@ function cardHtml(e, i, { past = false } = {}) {
   <h3>${esc(shortVenue)} playgroup</h3>
   <div class="where">${esc(e.venue)}</div>
   <div class="when">${when}</div>
-  <p class="desc">${desc}</p>
-  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
+${desc ? `  <p class="desc">${desc}</p>\n` : ''}  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
 </article>`;
 }
 
