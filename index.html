@@ -37,7 +37,7 @@
 </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Libre+Caslon+Text:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
     --paper: #FFF9F0;
@@ -282,6 +282,22 @@
     color: var(--ink-soft); font-size: 0.92rem;
   }
   footer a { color: var(--persimmon); text-decoration: none; font-weight: 700; }
+
+  /* ---------- Press ---------- */
+  .press { margin-top: 48px; text-align: center; scroll-margin-top: 24px; }
+  .press-title { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.35rem; }
+  .press-strip {
+    margin-top: 14px; padding: 18px 24px;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 20px;
+  }
+  .press-label { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .press-item { display: inline-flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 4px 12px; min-height: 44px; text-decoration: none; color: var(--ink); }
+  .press-pub { font-family: 'Libre Caslon Text', Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 1.45rem; line-height: 1.2; }
+  .press-meta { font-size: 0.92rem; font-weight: 700; color: var(--persimmon-deep); }
+  .press-item:hover .press-meta { text-decoration: underline; }
+  .press-contact { margin-top: 12px; font-size: 0.9rem; color: var(--ink-soft); }
+  .press-contact a { color: var(--persimmon-deep); font-weight: 700; text-decoration: none; }
 
 
   /* ---------- Community photos ---------- */
@@ -774,13 +790,13 @@ window.mpgForms = (function () {
           if (res.data && res.data.ok) { opts.onSuccess(); return; }
           var msg = res.status === 403
             ? 'We couldn’t verify you’re human. Please try again.'
-            : 'Something went wrong. Please try again, or email hello@mandarinplaygroup.com.';
+            : 'Something went wrong. Please try again, or email ' + ['hello', 'mandarinplaygroup.com'].join('@') + '.';
           if (res.data && res.data.error === 'invalid_email') msg = 'Please enter a valid email.';
           throw { userMsg: msg };
         })
         .catch(function (err) {
           opts.errorEl.textContent = (err && err.userMsg) ||
-            'Something went wrong. Please try again, or email hello@mandarinplaygroup.com.';
+            'Something went wrong. Please try again, or email ' + ['hello', 'mandarinplaygroup.com'].join('@') + '.';
           opts.button.disabled = false;
           resetWidget(form);
         });
@@ -943,7 +959,7 @@ window.mpgForms = (function () {
 
         <div class="mpgc-success">
           <h3>Thanks — we've got it! 👋</h3>
-          <p>We'll be in touch soon. In the meantime, feel free to email hello@mandarinplaygroup.com.</p>
+          <p>We'll be in touch soon. In the meantime, feel free to email <a class="js-email" href="#contact" data-u="hello" data-d="mandarinplaygroup.com">hello [at] mandarinplaygroup.com</a>.</p>
         </div>
       </div>
 
@@ -977,7 +993,7 @@ window.mpgForms = (function () {
       })();
       </script>
 
-      <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a></p>
+      <p class="contact-email" style="margin-top:18px; margin-bottom:0;">Prefer email? <a class="js-email" href="#contact" data-u="hello" data-d="mandarinplaygroup.com">hello [at] mandarinplaygroup.com</a></p>
     </div>
   </section>
   <section id="about">
@@ -1013,12 +1029,21 @@ window.mpgForms = (function () {
         </div>
       </div>
     </div>
+    <div class="press" id="press">
+      <h2 class="press-title" id="press-heading">Press</h2>
+      <div class="press-strip">
+        <span class="press-label">Featured in</span>
+        <a class="press-item" href="https://www.potreroview.net/2026-archives-october/" target="_blank" rel="noopener">
+          <span class="press-pub">The Potrero View</span>
+          <span class="press-meta">October 2026, p. 16 &rarr;</span>
+        </a>
+      </div>
+      <p class="press-contact">Media inquiries: <a class="js-email" href="#contact" data-u="hello" data-d="mandarinplaygroup.com">hello [at] mandarinplaygroup.com</a></p>
+    </div>
     <footer>
-      <footer>
       <div>Mandarin Playgroup (San Francisco) · Playdates, but in Mandarin</div>
-      <div>Brands &amp; venues: <a href="#contact">partner with us</a></div>
+      <div>Brands &amp; venues: <a href="#contact">partner with us</a> · <a href="#press">Press</a></div>
       <div><a href="https://www.instagram.com/mandarinplaygroup/" target="_blank" rel="noopener">Instagram</a></div>
-    </footer>
     </footer>
   </section>
 </div>
@@ -1039,6 +1064,17 @@ window.mpgForms = (function () {
   var x0=null; c.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
   c.addEventListener('touchend',function(e){ if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>40) go(dx<0?i+1:i-1); x0=null; });
   go(0);
+})();
+</script>
+<script>
+/* Builds email links at runtime so the address never appears in the page's HTML (keeps scrapers from harvesting it). */
+(function () {
+  var links = document.querySelectorAll('a.js-email');
+  for (var i = 0; i < links.length; i++) {
+    var a = links[i], addr = a.getAttribute('data-u') + '@' + a.getAttribute('data-d');
+    a.href = 'mailto:' + addr;
+    a.textContent = addr;
+  }
 })();
 </script>
 </body>
