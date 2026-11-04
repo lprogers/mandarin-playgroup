@@ -1,4 +1,7 @@
 {
   "note": "Tags playdates as special events for the homepage badge. Key = the event's Partiful link, value = \"storytime\" or \"music\". Titles containing \"Storytime\" or \"Music Class\" are tagged automatically; entries here override that. Remove an entry to remove the badge.",
-  "events": {}
+  "events": {
+    "https://partiful.com/e/JQjkwvtifAWUIEQhEZUw": "storytime",
+    "https://partiful.com/e/l3SOuzEvqnxXdEgewYen": "music"
+  }
 }
