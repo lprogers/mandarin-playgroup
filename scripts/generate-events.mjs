@@ -197,6 +197,25 @@ async function main() {
     if (err.code !== 'ENOENT') log(`extra-playgroups.json skipped: ${err.message}`);
   }
 
+  // Special-event tags (storytime, music class) for the homepage badge.
+  // data/special-events.json maps a Partiful URL to a key; it wins over
+  // anything detected from the Partiful title. Unknown keys are ignored.
+  const SPECIAL_KEYS = new Set(['storytime', 'music']);
+  let specialByUrl = {};
+  try {
+    specialByUrl = readJson('data/special-events.json').events || {};
+  } catch (err) {
+    if (err.code !== 'ENOENT') log(`special-events.json skipped: ${err.message}`);
+  }
+  const tagSpecial = (e) => {
+    if (e.kind !== 'playgroup') return;
+    const key = specialByUrl[e.url] ?? e.special ?? null;
+    if (SPECIAL_KEYS.has(key)) e.special = key; else delete e.special;
+  };
+  collected.forEach(tagSpecial);
+  const specialCount = collected.filter((e) => e.special).length;
+  if (specialCount) log(`special      ${String(specialCount).padStart(4)} playgroups tagged as special events`);
+
   // ── SFPL storytimes ────────────────────────────────────────────────────
   // SFPL runs ~25 branches, each with its own Families/Preschoolers storytime
   // most weeks — pulled in full that's 20-30+ near-duplicate listings on a
@@ -325,6 +344,7 @@ async function main() {
   let pastPlaygroups = null;
   try {
     pastPlaygroups = await fetchPastPlaygroups({ log });
+    pastPlaygroups.forEach(tagSpecial);
     log(`past playgroups ${String(pastPlaygroups.length).padStart(4)} events`);
   } catch (err) {
     log(`past playgroups   fetch failed (${err.message}) — leaving homepage section as-is`);

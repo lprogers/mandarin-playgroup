@@ -106,6 +106,19 @@ function cleanVenue(rawTitle) {
   return m ? `${m[2]} · ${m[1]}` : stripped;
 }
 
+/**
+ * Special sessions (storytime, music class) are flagged in the Partiful title
+ * itself, e.g. "Mandarin Playgroup - Storytime - Holly Park". Returns the
+ * special-event key, or null for a regular playdate. Manual tags in
+ * data/special-events.json override this.
+ */
+export function detectSpecial(rawTitle) {
+  const t = String(rawTitle || '').toLowerCase();
+  if (/story\s*time/.test(t)) return 'storytime';
+  if (/music\s*(class|together)/.test(t)) return 'music';
+  return null;
+}
+
 async function fetchProfileData() {
   const res = await fetch(PROFILE, {
     headers: { 'User-Agent': 'mandarinplaygroup-calendar/1.0 (+https://mandarinplaygroup.com)' },
@@ -149,6 +162,7 @@ export async function fetchPlaygroups({ log }) {
       url: `https://partiful.com/e/${r.id}`,
       cultural: 'mandarin',
       source: 'partiful',
+      special: detectSpecial(r.rawTitle),
     });
   }
 
@@ -193,6 +207,7 @@ export async function fetchPastPlaygroups({ log, days = 365 } = {}) {
       url: `https://partiful.com/e/${r.id}`,
       cultural: 'mandarin',
       source: 'partiful',
+      special: detectSpecial(r.rawTitle),
     });
   }
 

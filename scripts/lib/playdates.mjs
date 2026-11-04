@@ -44,6 +44,20 @@ const DOODLES = [
   '<path d="M8 46 A46 46 0 0 1 100 46" fill="none" stroke="#F5B62F" stroke-width="6" stroke-linecap="round"/><rect x="46" y="10" width="22" height="22" rx="5" fill="#4C9A6B"/>',
 ];
 
+// Special sessions get a corner "Special event" badge plus a chip naming the
+// activity. Keys come from the `special` field (see generate-events.mjs).
+const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 21l1.6-7L2 9.2l7.1-.6z"/></svg>';
+const SPECIALS = {
+  storytime: {
+    label: 'Mandarin Storytime',
+    icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.5 4.3 12 6c3.5-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.5-1.2-9 .5-3.5-1.7-6.5-1.7-9-.5z" fill="#4E8FD9"/><path d="M12 6v13.5" stroke="#fff" stroke-width="1.6"/></svg>',
+  },
+  music: {
+    label: 'Mandarin Music Class',
+    icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 17V5l11-2v12" fill="none" stroke="#4C9A6B" stroke-width="2.4" stroke-linejoin="round"/><circle cx="6.5" cy="17.5" r="3" fill="#4C9A6B"/><circle cx="17.5" cy="15" r="3" fill="#4C9A6B"/></svg>',
+  },
+};
+
 // Upcoming cards carry no description: the drop-in note (and "look for the
 // red nametags") lives once in the section intro in index.html, so cards
 // don't repeat the same line and no per-venue copy has to be written.
@@ -60,18 +74,19 @@ function cardHtml(e, i, { past = false } = {}) {
     (e.end ? ` – ${clock(e.end)}` : '');
   const evening = hh >= 16;
   const desc = past ? (evening ? EVENING_RECAP : DAYTIME_RECAP) : '';
-  const cardClass = past ? 'card card--past' : 'card';
+  const sp = SPECIALS[e.special] || null;
+  const cardClass = (past ? 'card card--past' : 'card') + (sp ? ' card--special' : '');
   const cta = past ? 'See details →' : 'RSVP →';
 
   return `<article class="${cardClass}">
-  <div class="card-date"><div class="mo">${MON[mo - 1]}</div><div class="day">${d}</div></div>
+${sp ? `  <div class="special-badge">${STAR} Special event</div>\n` : ''}  <div class="card-date"><div class="mo">${MON[mo - 1]}</div><div class="day">${d}</div></div>
   <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
     ${DOODLES[i % DOODLES.length]}
   </svg>
   <h3>${esc(shortVenue)} playgroup</h3>
   <div class="where">${esc(e.venue)}</div>
   <div class="when">${when}</div>
-${desc ? `  <p class="desc">${desc}</p>\n` : ''}  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
+${sp ? `  <div class="activity">${sp.icon} ${sp.label}</div>\n` : ''}${desc ? `  <p class="desc">${desc}</p>\n` : ''}  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
 </article>`;
 }
 

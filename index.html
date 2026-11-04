@@ -199,6 +199,24 @@
      the grid has to be hidden explicitly and restored only once open. */
   .past-toggle .cards--past { display: none; margin-top: 22px; }
   .past-toggle[open] .cards--past { display: grid; }
+  /* Special-event playdates (storytime, music class): corner badge + activity chip */
+  .card--special { position: relative; border: 2px solid var(--persimmon); background: linear-gradient(180deg, #FFF3EC 0, #fff 120px); }
+  .special-badge {
+    position: absolute; top: -13px; right: 18px; display: inline-flex; align-items: center; gap: 5px;
+    background: var(--persimmon); color: #fff; font-family: 'Fredoka', sans-serif; font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 12px 5px 10px; border-radius: 999px; box-shadow: 0 3px 0 var(--persimmon-deep);
+  }
+  .special-badge svg { width: 13px; height: 13px; }
+  .card .activity {
+    display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; margin-top: 12px;
+    background: #FFF0D1; border: 1px solid #F5D58A; border-radius: 999px; padding: 6px 12px 6px 8px;
+    font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95rem; color: var(--ink);
+  }
+  .card .activity svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .card .when + .activity + .rsvp { margin-top: auto; }
+  .card:has(.activity + .rsvp) .activity { margin-bottom: 20px; }
+  .card--past.card--special { border-color: var(--line); }
   .card--past { opacity: 0.72; }
   .card--past:hover { transform: none; box-shadow: 0 2px 0 var(--line); }
   .card--past .rsvp { color: var(--ink-soft); border-color: var(--line); }
