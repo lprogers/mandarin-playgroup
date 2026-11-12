@@ -238,7 +238,7 @@ I then incorporated AI directly into the product:
 
 ## Traction
 
-- **200+ Bay Area families** joined within four months of launch
+- **200+ Bay Area families** joined in about three months after launch
 - **#1 Google result across branded and high-intent searches** for queries including "mandarin playgroup," "mandarin playgroup san francisco," "mandarin playgroup bay area," "mandarin playgroup peninsula," "mandarin playgroup south bay," and "mandarin families community sf"
 - **70+ family events** aggregated from **10+ sources**
 - Calendar data refreshed automatically **twice daily**
