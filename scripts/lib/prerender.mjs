@@ -122,7 +122,12 @@ export function renderJsonLd(events, today, days = 60) {
       return o;
     });
 
-  return JSON.stringify(items, null, 2);
+  // Emit the whole <script> element. The JSONLD markers must sit OUTSIDE the
+  // script tag: an HTML comment inside application/ld+json makes the block
+  // invalid JSON, and Google then ignores every event in it. Escaping "<"
+  // keeps a stray "</script>" in an event title from ending the tag early.
+  const json = JSON.stringify(items, null, 2).replace(/</g, '\\u003c');
+  return `<script type="application/ld+json">\n${json}\n</script>`;
 }
 
 /** Replace the contents between <!-- NAME:START --> and <!-- NAME:END -->. */
