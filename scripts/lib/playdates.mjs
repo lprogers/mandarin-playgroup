@@ -83,7 +83,7 @@ ${sp ? `  <div class="special-badge">${STAR} Special event</div>\n` : ''}  <div 
   <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
     ${DOODLES[i % DOODLES.length]}
   </svg>
-  <h3>${esc(shortVenue)} playgroup</h3>
+  <h3>${esc(shortVenue)} playdate</h3>
   <div class="where">${esc(e.venue)}</div>
   <div class="when">${when}</div>
 ${sp ? `  <div class="activity">${sp.icon} ${sp.label}</div>\n` : ''}${desc ? `  <p class="desc">${desc}</p>\n` : ''}  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
