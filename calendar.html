@@ -5819,6 +5819,99 @@ body{
   .pg-nav{gap:16px}
 }
 
+
+/* ── Redesign (Nov 2026): hero card, filters, today-first list ───────── */
+.pg-hero--split{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.pg-hero-copy{flex:999 1 480px;min-width:0}
+.pg-updated{display:flex;align-items:center;gap:8px;font-size:.95rem;margin-top:10px}
+.pg-updated-dot{width:8px;height:8px;border-radius:50%;background:#2E8B57;flex:0 0 8px}
+.mpgcal-next{flex:1 1 300px;min-width:0;max-width:420px;background:#fff;border:2px solid #E8553D;border-radius:16px;
+  padding:20px 22px;display:flex;flex-direction:column;gap:8px;font-family:'Nunito',system-ui,sans-serif;color:#2B2B33}
+.mpgcal-next[hidden]{display:none}
+.mpgcal-next-kicker{margin:0;display:flex;align-items:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:600;
+  font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:#C23E29}
+.mpgcal-next-when{margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.35rem;line-height:1.2}
+.mpgcal-next-where{margin:0;font-size:.95rem;line-height:1.5;color:#4A4A55}
+.mpgcal-next-ctas{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:6px}
+.mpgcal-btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 20px;border-radius:999px;
+  background:#C23E29;color:#fff;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1rem;text-decoration:none;white-space:nowrap}
+.mpgcal-btn:hover{background:#9E2F1E;color:#fff}
+.mpgcal-btn--lg{min-height:50px;padding:0 26px;font-size:1.05rem}
+.mpgcal-link{display:inline-flex;align-items:center;min-height:44px;color:#C23E29;font-family:'Fredoka',sans-serif;font-weight:600;text-decoration:none}
+.mpgcal-link:hover{text-decoration:underline;text-underline-offset:3px}
+.mpgcal-btn:focus-visible,.mpgcal-link:focus-visible,.mpgcal-chip:focus-visible,.mpgcal-addcal:focus-visible,
+.mpgcal-outline:focus-visible,.mpgcal-row-name a:focus-visible{outline:2.5px solid #C23E29;outline-offset:2px}
+
+.mpgcal-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.mpgcal-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;cursor:pointer;
+  border:2px solid #D9CDB8;background:#fff;color:var(--mpgcal-ink);font-family:'Fredoka',sans-serif;font-weight:500;font-size:.95rem}
+.mpgcal-chip:hover{border-color:var(--mpgcal-persimmon)}
+.mpgcal-chip[aria-pressed="true"]{background:var(--mpgcal-ink);border-color:var(--mpgcal-ink);color:#fff}
+.mpgcal-chip-dot{width:9px;height:9px;border-radius:50%;flex:0 0 9px}
+.mpgcal-chip-dot--library{background:var(--mpgcal-sky)}
+.mpgcal-chip-dot--swim{background:var(--mpgcal-swim)}
+.mpgcal-chip-dot--music{background:var(--mpgcal-music)}
+
+.mpgcal-list{display:flex;flex-direction:column;gap:26px}
+.mpgcal-dsec-h{margin:0 0 10px;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;
+  font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.3rem;line-height:1.2}
+.mpgcal-dsec-h small{font-family:'Nunito',sans-serif;font-weight:600;font-size:.85rem;color:var(--mpgcal-soft)}
+.mpgcal-dsec--today .mpgcal-dsec-h{color:var(--mpgcal-persimmon-deep)}
+.mpgcal-rows{display:flex;flex-direction:column;gap:8px}
+.mpgcal-row{--mpgcal-accent:var(--mpgcal-border);display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;
+  background:#fff;border:1.5px solid var(--mpgcal-border);border-radius:14px;padding:12px 12px 12px 16px}
+.mpgcal-row--library{--mpgcal-accent:var(--mpgcal-sky)}
+.mpgcal-row--swim{--mpgcal-accent:var(--mpgcal-swim)}
+.mpgcal-row--music{--mpgcal-accent:var(--mpgcal-music)}
+.mpgcal-row--playgroup,.mpgcal-row--culture{--mpgcal-accent:var(--mpgcal-persimmon)}
+.mpgcal-row--lantern{background:#FFF1EC;border:2px solid var(--mpgcal-persimmon)}
+.mpgcal-row-time{flex:0 0 160px;margin:0;display:flex;align-items:center;gap:8px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:.95rem}
+.mpgcal-row-time::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--mpgcal-accent);flex:0 0 9px}
+.mpgcal-row-main{flex:999 1 240px;min-width:0}
+.mpgcal-row-name{margin:0;display:flex;align-items:center;gap:8px;font-weight:800;font-size:1rem;line-height:1.35}
+.mpgcal-row-name img{flex:0 0 auto}
+.mpgcal-row-name a{color:var(--mpgcal-ink);text-decoration:none}
+.mpgcal-row-name a:hover{text-decoration:underline;text-underline-offset:3px}
+.mpgcal-row-name a::after{content:" \2197";color:var(--mpgcal-soft);font-weight:700}
+.mpgcal-row-venue{margin:2px 0 0;font-size:.88rem;line-height:1.4;color:var(--mpgcal-soft)}
+.mpgcal-tags{display:flex;flex-wrap:wrap;gap:6px}
+.mpgcal-tag{font-size:.75rem;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.mpgcal-tag--free{background:#E3F2E9;color:#1E6B42}
+.mpgcal-tag--fee{background:#F1ECE3;color:#5A4A30}
+.mpgcal-tag--lang{background:#FCE6E1;color:#9E2F1E}
+.mpgcal-addcal{flex:0 0 44px;width:44px;height:44px;border-radius:12px;border:1.5px solid var(--mpgcal-border);
+  background:var(--mpgcal-cream);color:var(--mpgcal-ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.mpgcal-addcal:hover{border-color:var(--mpgcal-persimmon)}
+.mpgcal-addcal svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mpgcal-lempty{margin:0;padding:14px 16px;background:#fff;border:1.5px dashed #D9CDB8;border-radius:12px;color:var(--mpgcal-soft);font-size:.92rem}
+
+.mpgcal-join{margin-top:40px;background:var(--mpgcal-ink);color:#fff;border-radius:16px;padding:32px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px}
+.mpgcal-join-copy{flex:999 1 380px;min-width:0}
+.mpgcal-join h2{margin:0 0 8px;font-family:'Fredoka',sans-serif;font-weight:600;font-size:clamp(1.35rem,3vw,1.75rem);line-height:1.2}
+.mpgcal-join p{margin:0;font-size:1rem;line-height:1.6;color:#E6E2DA}
+.mpgcal-more{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.mpgcal-card{background:#fff;border:1.5px solid var(--mpgcal-border);border-radius:16px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.mpgcal-card h2{margin:0;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.2rem}
+.mpgcal-card p{margin:0 0 6px;font-size:.95rem;line-height:1.55;color:#4A4A55}
+.mpgcal-outline{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;cursor:pointer;
+  border:2px solid var(--mpgcal-persimmon-deep);background:transparent;color:var(--mpgcal-persimmon-deep);
+  font-family:'Fredoka',sans-serif;font-weight:600;font-size:.95rem;text-decoration:none}
+.mpgcal-outline--ink{border-color:var(--mpgcal-ink);color:var(--mpgcal-ink)}
+.mpgcal-outline:hover{background:var(--mpgcal-sand)}
+
+@media (max-width:640px){
+  .mpgcal-next{max-width:none}
+  .mpgcal-row{padding:12px 12px 12px 14px}
+  .mpgcal-row-time{flex-basis:100%}
+  .mpgcal-row-main{flex:1 1 0}
+  .mpgcal-tags{order:3;flex-basis:100%}
+  .mpgcal-addcal{order:2}
+  .mpgcal-more{grid-template-columns:1fr}
+  .mpgcal-join{padding:24px 20px}
+  .mpgcal-filters{flex-wrap:nowrap;overflow-x:auto;margin-left:-20px;margin-right:-20px;padding:0 20px 4px;scrollbar-width:none}
+  .mpgcal-chip{flex:0 0 auto}
+}
 </style>
 <script src="/analytics.js" defer></script>
 </head>
@@ -5856,11 +5949,22 @@ body{
 
 <main>
 
-  <div class="pg-hero">
-    <p class="pg-eyebrow">San Francisco</p>
-    <h1 class="pg-h1">Things to do with kids in San Francisco this week</h1>
-    <p class="pg-sub">Storytimes, family swim, music, playgroups, and every Mandarin and Chinese cultural event we can find. Look for the lantern.</p>
-    <p class="pg-lede">Updated twice a day.</p>
+  <div class="pg-hero pg-hero--split">
+    <div class="pg-hero-copy">
+      <p class="pg-eyebrow">San Francisco</p>
+      <h1 class="pg-h1">Things to do with kids in San Francisco this week</h1>
+      <p class="pg-sub">Storytimes, family swim, music, playgroups, and every Mandarin and Chinese cultural event we can find. Look for the lantern.</p>
+      <p class="pg-lede pg-updated"><span class="pg-updated-dot" aria-hidden="true"></span><span data-mpgcal-updated>Updated twice a day.</span></p>
+    </div>
+    <aside class="mpgcal-next" data-mpgcal-next aria-label="Next Mandarin Playgroup playdate" hidden>
+      <p class="mpgcal-next-kicker"><img src="/lantern.png" alt="" width="11" height="19"> Next Mandarin Playgroup playdate</p>
+      <p class="mpgcal-next-when" data-mpgcal-next-when></p>
+      <p class="mpgcal-next-where" data-mpgcal-next-where></p>
+      <div class="mpgcal-next-ctas">
+        <a class="mpgcal-btn" data-mpgcal-next-rsvp href="/#events" target="_blank" rel="noopener">RSVP</a>
+        <a class="mpgcal-link" href="/#newsletter" data-mpgcal-track="calendar_join_click">Join 200+ families &rarr;</a>
+      </div>
+    </aside>
   </div>
 
   <!-- Crawlable list, replaced by the grid once the script runs. -->
@@ -6056,6 +6160,14 @@ body{
 <div class="mpgcal" id="calendar">
   <div class="mpgcal-inner">
 
+    <div class="mpgcal-filters" role="group" aria-label="Filter events">
+      <button type="button" class="mpgcal-chip" data-mpgcal-filter="all" aria-pressed="true">All</button>
+      <button type="button" class="mpgcal-chip mpgcal-chip--lantern" data-mpgcal-filter="mandarin" aria-pressed="false"><img src="/lantern.png" alt="" width="11" height="19"> Mandarin &amp; Chinese</button>
+      <button type="button" class="mpgcal-chip" data-mpgcal-filter="library" aria-pressed="false"><span class="mpgcal-chip-dot mpgcal-chip-dot--library" aria-hidden="true"></span>Storytime</button>
+      <button type="button" class="mpgcal-chip" data-mpgcal-filter="swim" aria-pressed="false"><span class="mpgcal-chip-dot mpgcal-chip-dot--swim" aria-hidden="true"></span>Family swim</button>
+      <button type="button" class="mpgcal-chip" data-mpgcal-filter="music" aria-pressed="false"><span class="mpgcal-chip-dot mpgcal-chip-dot--music" aria-hidden="true"></span>Music</button>
+    </div>
+
     <div class="mpgcal-ask">
       <h3 class="mpgcal-ask-title">Ask the calendar</h3>
       <p class="mpgcal-ask-sub">Skip the scrolling — ask in plain English.</p>
@@ -6083,20 +6195,11 @@ body{
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5"/></svg>
         </button>
       </div>
-      <button class="mpgcal-today" data-mpgcal-today hidden>Back to this week</button>
+      <button class="mpgcal-today" data-mpgcal-today hidden>Back to today</button>
     </div>
 
-    <div class="mpgcal-grid" data-mpgcal-grid></div>
+    <div class="mpgcal-list" data-mpgcal-grid aria-live="polite"></div>
 
-    <div class="mpgcal-legend">
-      <span class="mpgcal-key mpgcal-key--playgroup">
-        <img class="mpgcal-key-lantern" src="/lantern.png" alt="" width="13" height="22" loading="lazy">
-        Mandarin or Chinese cultural
-      </span>
-      <span class="mpgcal-key mpgcal-key--library">Library storytime</span>
-      <span class="mpgcal-key mpgcal-key--swim">Family swim</span>
-      <span class="mpgcal-key mpgcal-key--music">Music</span>
-    </div>
 
     <p class="mpgcal-note">
       We keep this calendar as accurate as we can, but recurring events get cancelled or
@@ -6105,16 +6208,25 @@ body{
       <a href="mailto:hello@mandarinplaygroup.com">hello@mandarinplaygroup.com</a>.
     </p>
 
-    <div class="mpgcal-cta">
-      <h3 class="mpgcal-cta-title">Playdates, but in Mandarin</h3>
-      <p class="mpgcal-cta-body">
-        200+ families at rotating playgrounds across San Francisco and the Bay Area, where kids hear and
-        speak Mandarin naturally. All levels welcome.
-      </p>
-      <a class="mpgcal-cta-btn" href="/#newsletter">Join the community</a>
-      <button class="mpgcal-cta-alt" type="button" data-mpgcal-share>
-        Know a parent who'd use this? Send it their way →
-      </button>
+    <section class="mpgcal-join" aria-labelledby="mpgcal-join-h">
+      <div class="mpgcal-join-copy">
+        <h2 id="mpgcal-join-h">Want your kids speaking Mandarin with other kids?</h2>
+        <p>Join 200+ families who meet at playgrounds across San Francisco and the Bay Area so kids speak Mandarin through play. Free, and all levels are welcome.</p>
+      </div>
+      <a class="mpgcal-btn mpgcal-btn--lg" href="/#newsletter" data-mpgcal-track="calendar_join_click">Join the community</a>
+    </section>
+
+    <div class="mpgcal-more">
+      <div class="mpgcal-card">
+        <h2>Run a kids' class or event in SF?</h2>
+        <p>Get it listed, or partner with a community of 200+ Mandarin-curious families.</p>
+        <a class="mpgcal-outline" href="/#contact" data-mpgcal-track="calendar_partner_click">Get in touch</a>
+      </div>
+      <div class="mpgcal-card">
+        <h2>Know a parent who'd use this?</h2>
+        <p>Send them the calendar. It's the easiest way to help the community grow.</p>
+        <button class="mpgcal-outline mpgcal-outline--ink" type="button" data-mpgcal-share>Share the calendar</button>
+      </div>
     </div>
 
   </div>
@@ -6183,6 +6295,7 @@ document.addEventListener("DOMContentLoaded", function(){
   "use strict";
 
   var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var DOW_FULL = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
   var SFPARK   = "https://www.tjpa.org/salesforce-transit-center/activities";
@@ -6260,8 +6373,12 @@ document.addEventListener("DOMContentLoaded", function(){
   if(!grid) return;
 
   var feed = null;
-  var anchor = sundayOf(ptToday());
+  /* The list is a rolling 7 days starting today (not Sunday), so the top of
+     the page is always something you can still go to. */
+  var anchor = ptToday();
   var thisWeek = dayNum(anchor);
+  var filter = "all";
+  var rendered = [];   // events behind the add-to-calendar buttons, by index
 
   function esc(s){
     return String(s).replace(/[&<>"]/g,function(c){
@@ -6292,7 +6409,8 @@ document.addEventListener("DOMContentLoaded", function(){
           name:feed[i].title || "Untitled",
           venue:feed[i].venue || "",
           url:safeUrl(feed[i].url),
-          lantern:feed[i].cultural === "mandarin"
+          lantern:feed[i].cultural === "mandarin",
+          id:feed[i].id || "", startIso:feed[i].start, endIso:feed[i].end || ""
         });
       }
     } else {
@@ -6351,17 +6469,81 @@ document.addEventListener("DOMContentLoaded", function(){
     return '<a class="'+cls+'" href="'+esc(ev.url)+'" target="_blank" rel="noopener" aria-label="'+label+'">'+body+'</a>';
   }
 
+  /* Cost and language labels. Cost only where we know it: the "What does it
+     cost?" section below is the source (libraries, Salesforce Park, Thrive City
+     and our playgroups are free; Rec & Park swim charges admission). */
+  function tagsFor(ev){
+    var t = [];
+    if(ev.lantern){
+      if(/cantonese/i.test(ev.name)) t.push(["Cantonese","lang"]);
+      else if(ev.kind === "playgroup" || /mandarin/i.test(ev.name)) t.push(["Mandarin","lang"]);
+    }
+    if(ev.kind === "swim") t.push(["Pool fee","fee"]);
+    else if(ev.kind === "playgroup" || ev.kind === "library" || ev.kind === "music") t.push(["Free","free"]);
+    return t;
+  }
+
+  function matches(ev){
+    if(filter === "all") return true;
+    if(filter === "mandarin") return ev.lantern;
+    return ev.kind === filter;
+  }
+
+  function row(ev, idx){
+    var when = clockHM(ev.hh, ev.mm) + (ev.endHh!=null ? " – "+clockHM(ev.endHh, ev.endMm) : "");
+    var cls  = "mpgcal-row mpgcal-row--"+esc(ev.kind) + (ev.lantern ? " mpgcal-row--lantern" : "");
+    var name = ev.url
+      ? '<a href="'+esc(ev.url)+'" target="_blank" rel="noopener">'+esc(ev.name)+'</a>'
+      : esc(ev.name);
+    var tags = tagsFor(ev), th = "";
+    for(var i=0;i<tags.length;i++) th += '<span class="mpgcal-tag mpgcal-tag--'+tags[i][1]+'">'+esc(tags[i][0])+'</span>';
+    return '<article class="'+cls+'">'+
+      '<p class="mpgcal-row-time">'+esc(when)+'</p>'+
+      '<div class="mpgcal-row-main">'+
+        '<p class="mpgcal-row-name">'+
+          (ev.lantern ? '<img src="/lantern.png" alt="Mandarin or Chinese cultural event" width="11" height="19">' : '')+
+          name+'</p>'+
+        (ev.venue ? '<p class="mpgcal-row-venue">'+esc(ev.venue)+'</p>' : '')+
+      '</div>'+
+      (th ? '<div class="mpgcal-tags">'+th+'</div>' : '')+
+      '<button type="button" class="mpgcal-addcal" data-mpgcal-ics="'+idx+'" aria-label="Add '+esc(ev.name)+' to your calendar" title="Add to calendar">'+
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 13v5M9.5 15.5h5"/></svg>'+
+      '</button>'+
+    '</article>';
+  }
+
   function render(){
-    var today = ptToday(), html = "", i, k;
+    var today = ptToday(), now = ptParts(new Date()), nowMin = now.hh*60+now.mm;
+    var html = "", i, k;
+    rendered = [];
     for(i=0;i<7;i++){
-      var day = addDays(anchor,i), evs = eventsFor(day);
-      html += '<div class="mpgcal-day'+(sameDay(day,today)?" mpgcal-day--today":"")+
-              (evs.length?"":" mpgcal-day--empty")+'">'+
-              '<div class="mpgcal-dayhead"><span class="mpgcal-dow">'+DOW[i]+
-              '</span><span class="mpgcal-dnum">'+day.d+'</span></div>';
-      if(evs.length){ for(k=0;k<evs.length;k++) html += card(evs[k]); }
-      else html += '<p class="mpgcal-empty">Nothing listed</p>';
-      html += '</div>';
+      var day = addDays(anchor,i), isToday = sameDay(day,today);
+      var all = eventsFor(day);
+      /* Today: drop what has already finished. */
+      if(isToday){
+        all = all.filter(function(e){
+          var endMin = e.endHh!=null ? e.endHh*60+e.endMm : e.hh*60+e.mm+60;
+          return endMin > nowMin;
+        });
+      }
+      var evs = all.filter(matches);
+      var dname = DOW_FULL[dowOf(day)]+", "+MON[day.mo-1]+" "+day.d;
+      var label = isToday ? "Today · "+dname
+                : sameDay(day, addDays(today,1)) ? "Tomorrow · "+dname : dname;
+      html += '<section class="mpgcal-dsec'+(isToday?" mpgcal-dsec--today":"")+'">'+
+              '<h3 class="mpgcal-dsec-h">'+esc(label)+
+              (evs.length ? '<small>'+evs.length+(evs.length===1?" event":" events")+'</small>' : '')+'</h3>';
+      if(evs.length){
+        html += '<div class="mpgcal-rows">';
+        for(k=0;k<evs.length;k++){ rendered.push({ev:evs[k], day:day}); html += row(evs[k], rendered.length-1); }
+        html += '</div>';
+      } else {
+        var msg = filter !== "all" ? "Nothing in this category" + (isToday ? " for the rest of today." : " on this day.")
+                : isToday && eventsFor(day).length ? "That's everything for today."
+                : "Nothing listed.";
+        html += '<p class="mpgcal-lempty">'+msg+'</p>';
+      }
+      html += '</section>';
     }
     grid.innerHTML = html;
 
@@ -6373,6 +6555,95 @@ document.addEventListener("DOMContentLoaded", function(){
     todayBtn.hidden = (dayNum(anchor)===thisWeek);
   }
 
+  /* Filter chips */
+  var chips = document.querySelectorAll("[data-mpgcal-filter]");
+  chips.forEach(function(chip){
+    chip.addEventListener("click", function(){
+      filter = chip.getAttribute("data-mpgcal-filter");
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", c===chip ? "true" : "false"); });
+      mpgTrack("calendar_filter", { filter: filter });
+      render();
+    });
+  });
+
+  /* Add to calendar: builds a one-event .ics file on the spot. */
+  function icsEsc(t){ return String(t||"").replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+  function icsUtc(d){ return d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,""); }
+  function pad2(n){ return (n<10?"0":"")+n; }
+  function icsLocal(day, hh, mm){ return day.y+pad2(day.mo)+pad2(day.d)+"T"+pad2(hh)+pad2(mm)+"00"; }
+  grid.addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest("[data-mpgcal-ics]") : null;
+    if(!btn) return;
+    var item = rendered[+btn.getAttribute("data-mpgcal-ics")];
+    if(!item) return;
+    var ev = item.ev, start, end;
+    if(ev.startIso){
+      start = "DTSTART:"+icsUtc(new Date(ev.startIso));
+      end = ev.endIso ? "DTEND:"+icsUtc(new Date(ev.endIso))
+                      : "DTEND:"+icsUtc(new Date(new Date(ev.startIso).getTime()+3600000));
+    } else {
+      start = "DTSTART;TZID="+PT_ZONE+":"+icsLocal(item.day, ev.hh, ev.mm);
+      end = ev.endHh!=null ? "DTEND;TZID="+PT_ZONE+":"+icsLocal(item.day, ev.endHh, ev.endMm) : "";
+    }
+    var lines = [
+      "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Mandarin Playgroup//Calendar//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+      "UID:"+(ev.id || (dayNum(item.day)+"-"+ev.hh+ev.mm+"-"+ev.name.replace(/\W+/g,"")))+"@mandarinplaygroup.com",
+      "DTSTAMP:"+icsUtc(new Date()), start
+    ];
+    if(end) lines.push(end);
+    lines.push("SUMMARY:"+icsEsc(ev.name));
+    if(ev.venue) lines.push("LOCATION:"+icsEsc(ev.venue+", San Francisco, CA"));
+    if(ev.url) lines.push("URL:"+ev.url);
+    lines.push("DESCRIPTION:"+icsEsc((ev.url ? "Details: "+ev.url+"\n" : "")+"Found on mandarinplaygroup.com/calendar — check with the venue before you go."));
+    lines.push("END:VEVENT","END:VCALENDAR");
+    var blob = new Blob([lines.join("\r\n")+"\r\n"], {type:"text/calendar;charset=utf-8"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = (ev.name.replace(/[^\w]+/g,"-").replace(/^-|-$/g,"").toLowerCase() || "event")+".ics";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    mpgTrack("calendar_add_to_calendar", { kind: ev.kind });
+  });
+
+  /* Next Mandarin Playgroup playdate, from the live feed. */
+  function renderNext(){
+    var box = document.querySelector("[data-mpgcal-next]");
+    if(!box || !feed) return;
+    var now = Date.now(), best = null;
+    for(var i=0;i<feed.length;i++){
+      var f = feed[i];
+      if(f.kind !== "playgroup") continue;
+      var st = new Date(f.start).getTime(), en = f.end ? new Date(f.end).getTime() : st+3*3600000;
+      if(isNaN(st) || en < now) continue;
+      if(!best || st < new Date(best.start).getTime()) best = f;
+    }
+    if(!best) return;
+    var sp = ptParts(new Date(best.start));
+    var dow = DOW[dowOf({y:sp.y,mo:sp.mo,d:sp.d})];
+    box.querySelector("[data-mpgcal-next-when]").textContent = dow+", "+MON[sp.mo-1]+" "+sp.d+" · "+clockHM(sp.hh, sp.mm);
+    box.querySelector("[data-mpgcal-next-where]").textContent =
+      (best.venue ? best.venue+". " : "")+"Kids speak Mandarin together through play. Free, and all levels are welcome.";
+    var rsvp = box.querySelector("[data-mpgcal-next-rsvp]");
+    var u = safeUrl(best.url);
+    if(u){ rsvp.href = u; } else { rsvp.removeAttribute("target"); }
+    rsvp.addEventListener("click", function(){ mpgTrack("calendar_rsvp_click", { from: "next_card" }); });
+    box.hidden = false;
+  }
+
+  /* "Updated today at 12:42 PM" — proof the twice-daily refresh is real. */
+  function renderUpdated(iso){
+    var el = document.querySelector("[data-mpgcal-updated]");
+    var d = new Date(iso);
+    if(!el || isNaN(d)) return;
+    var p = ptParts(d), t = ptToday(), day = {y:p.y,mo:p.mo,d:p.d};
+    var when = sameDay(day,t) ? "today" : sameDay(day, addDays(t,-1)) ? "yesterday" : MON[p.mo-1]+" "+p.d;
+    el.textContent = "Updated "+when+" at "+clockHM(p.hh, p.mm)+".";
+  }
+
+  document.querySelectorAll("[data-mpgcal-track]").forEach(function(a){
+    a.addEventListener("click", function(){ mpgTrack(a.getAttribute("data-mpgcal-track")); });
+  });
+
   document.querySelectorAll("[data-mpgcal-step]").forEach(function(btn){
     btn.addEventListener("click",function(){
       anchor = addDays(anchor, 7*parseInt(btn.getAttribute("data-mpgcal-step"),10));
@@ -6380,7 +6651,7 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   });
   todayBtn.addEventListener("click",function(){
-    anchor = sundayOf(ptToday());
+    anchor = ptToday();
     render();
   });
 
@@ -6423,7 +6694,8 @@ document.addEventListener("DOMContentLoaded", function(){
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(data){
       var list = data && (Array.isArray(data) ? data : data.events);
-      if(list && list.length){ feed = list; render(); }
+      if(list && list.length){ feed = list; render(); renderNext(); }
+      if(data && data.generated) renderUpdated(data.generated);
     })
     .catch(function(){ /* keep the placeholder week */ });
 
