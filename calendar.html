@@ -6475,8 +6475,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function tagsFor(ev){
     var t = [];
     if(ev.lantern){
-      if(/cantonese/i.test(ev.name)) t.push(["Cantonese","lang"]);
-      else if(ev.kind === "playgroup" || /mandarin/i.test(ev.name)) t.push(["Mandarin","lang"]);
+      if(!/cantonese/i.test(ev.name) && (ev.kind === "playgroup" || /mandarin/i.test(ev.name))) t.push(["Mandarin","lang"]);
     }
     if(ev.kind === "swim") t.push(["Pool fee","fee"]);
     else if(ev.kind === "playgroup" || ev.kind === "library" || ev.kind === "music") t.push(["Free","free"]);
