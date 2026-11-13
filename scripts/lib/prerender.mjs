@@ -117,7 +117,7 @@ export function renderJsonLd(events, today, days = 60) {
           url: e.url,
           validFrom: new Date(today).toISOString(),
         };
-        o.description = 'A free, parent-led Mandarin playgroup at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required.';
+        o.description = 'A free, parent-led Mandarin playdate at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required.';
       }
       return o;
     });
