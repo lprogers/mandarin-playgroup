@@ -31,7 +31,7 @@
   "@type": "Organization",
   "name": "Mandarin Playgroup",
   "url": "https://mandarinplaygroup.com/",
-  "description": "A free, parent-led community of San Francisco families whose children speak Mandarin together at rotating public playgrounds.",
+  "description": "A parent-led community of San Francisco families whose children speak Mandarin together at rotating public playgrounds.",
   "areaServed": { "@type": "City", "name": "San Francisco" }
 }
 </script>
@@ -213,7 +213,7 @@
       "url": "https://partiful.com/e/l3SOuzEvqnxXdEgewYen",
       "validFrom": "2026-11-12T23:46:39.000Z"
     },
-    "description": "A free, parent-led Mandarin playgroup at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required."
+    "description": "A parent-led Mandarin playgroup at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required."
   },
   {
     "@context": "https://schema.org",
@@ -3508,7 +3508,7 @@
       "url": "https://partiful.com/e/rKXlohA0CtRkLmQWD4FU",
       "validFrom": "2026-11-12T23:46:39.000Z"
     },
-    "description": "A free, parent-led Mandarin playgroup at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required."
+    "description": "A parent-led Mandarin playgroup at a San Francisco playground. Kids hear and speak Mandarin with other children. No Mandarin fluency required."
   },
   {
     "@context": "https://schema.org",
@@ -6128,7 +6128,7 @@ body{
     <p>
       We're a group of San Francisco parents, and we built this because we were tired of
       checking four different websites every week to work out what to do with our kids.
-      It pulls together library storytimes, free outdoor music, family swim sessions, and
+      It pulls together library storytimes, outdoor music, family swim sessions, and
       our own playgroups into one week view. It updates twice a day.
     </p>
 
@@ -6150,7 +6150,7 @@ body{
 
     <h3>Who runs it</h3>
     <p>
-      <a href="/">Mandarin Playgroup</a> is a free, parent-led community of 200+ families
+      <a href="/">Mandarin Playgroup</a> is a parent-led community of 200+ families
       in San Francisco and the Bay Area. We meet at rotating public playgrounds so kids hear and speak Mandarin
       naturally — with each other, not just with adults. All levels welcome.
     </p>
@@ -6403,10 +6403,10 @@ document.addEventListener("DOMContentLoaded", function(){
       }
       if(navigator.share){
         navigator.share({
-          title: "Free things to do with kids in San Francisco",
+          title: "Things to do with kids in San Francisco this week",
           /* Note: iOS often drops `text` when `url` is present and shows only
              the link preview, so the Open Graph tags do most of this work. */
-          text: "I thought you'd like this — a calendar of free things to do with kids in SF, kept up to date by Mandarin Playgroup.",
+          text: "I thought you'd like this — a calendar of the best things to do with kids in SF, kept up to date by Mandarin Playgroup.",
           url: url
         }).catch(function(){ /* dismissed — say nothing */ });
       } else if(navigator.clipboard && navigator.clipboard.writeText){
@@ -6511,7 +6511,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
   if(askForm){
-    ["Free things to do this weekend", "Mandarin playgroups this month",
+    ["Things to do this weekend", "Mandarin playgroups this month",
      "Music or storytime this week", "Toddler swim times this week"].forEach(function(q){
       var b = document.createElement("button");
       b.type = "button"; b.className = "mpgcal-ask-chip"; b.textContent = q;
