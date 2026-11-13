@@ -67,6 +67,12 @@ const SPECIALS = {
 const DAYTIME_RECAP = 'Another good morning at the playground — thanks to everyone who came out!';
 const EVENING_RECAP = 'Another good after-work turnout — thanks to everyone who came out!';
 
+// Most Partiful titles name a place ("Upper Noe Recreation Center"). Some are
+// event names instead ("Holiday Potluck") because the address is only shown
+// to guests who RSVP yes — so there is no place to put on the card.
+const PLACE_WORDS = /\b(park|playground|rec(reation)?|center|centre|square|plaza|library|garden|field|school|museum|yard|beach|pier|commons|court|grove|hill|lot|green)\b/i;
+const isPlace = (venue) => PLACE_WORDS.test(venue);
+
 function cardHtml(e, i, { past = false } = {}) {
   const { mo, d, hh } = parts(e.start);
   const shortVenue = e.venue.split(' · ')[0];
@@ -83,8 +89,8 @@ ${sp ? `  <div class="special-badge">${STAR} Special event</div>\n` : ''}  <div 
   <svg class="card-doodle" viewBox="0 0 120 56" aria-hidden="true">
     ${DOODLES[i % DOODLES.length]}
   </svg>
-  <h3>${esc(shortVenue)} playdate</h3>
-  <div class="where">${esc(e.venue)}</div>
+  <h3>${esc(shortVenue)}${isPlace(shortVenue) ? ' playdate' : ''}</h3>
+${isPlace(e.venue) ? `  <div class="where">${esc(e.venue)}</div>` : past ? '' : '  <div class="where">Location shared once you RSVP</div>'}
   <div class="when">${when}</div>
 ${sp ? `  <div class="activity">${sp.icon} ${sp.label}</div>\n` : ''}${desc ? `  <p class="desc">${desc}</p>\n` : ''}  <a class="rsvp" href="${esc(e.url)}" target="_blank" rel="noopener">${cta}</a>
 </article>`;
